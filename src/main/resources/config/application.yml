@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+    datasource:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: ENC(HvXymlmjU+21R1u6pxp5fC3b1Zm3hz6oKUu6mEgAshKYHYtIf/t/EAQA0g8Ks05k7+/rZoIi/ZFs2Du0fy9Xtg==)
+      username: ENC(/cfBuPPvDoDCYGEPmnZZyg==)
+      password: ENC(R1L/gnSgUGntop24Zg15PO1KZnXoDIvZ)
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  charset:
+    console: UTF-8
+  level:
+    root: info
+    jdbc: off
+    jdbc.sqlonly: off
+    jdbc.sqltiming: debug
+    jdbc.audit: off
+    jdbc.resultset: off
+    jdbc.resultsettable: off
+    jdbc.connection: off
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
