@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <PageHeader/>
+    <Header/>
 
     <v-main>
       <v-container fluid>
@@ -8,20 +8,20 @@
       </v-container>
     </v-main>
 
-    <PageFooter/>
+    <Footer/>
   </v-app>
 </template>
 
 <script>
-import PageHeader from './components/PageHeader.vue'
-import PageFooter from './components/PageFooter.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 
 export default {
   name: 'App',
 
   components: {
-    PageHeader,
-    PageFooter
+    Header,
+    Footer
   },
 
   data: () => ({

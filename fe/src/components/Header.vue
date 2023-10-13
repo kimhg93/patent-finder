@@ -1,15 +1,11 @@
 <template>
     <header>
         <v-navigation-drawer app elevation="2" v-model="drawer">
-            <v-list>
-                <v-list-item-group>
-                    <v-list-item v-for="item in items" :key="item.title" @click="navigate(item)">
-                        <v-list-item-content>
-                            <v-list-item-title>{{ item.title }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-item-group>
+            <v-list :items="items">
+                <v-list-item v-for="item in items" :title="item.title" :key="item.title" @click="navigate(item)">
+                </v-list-item>
             </v-list>
+
         </v-navigation-drawer>
 
         <v-app-bar elevation="2" flat>
@@ -28,10 +24,14 @@
         },
 
         data: () => ({
-            drawer: false,
+            drawer: true,
             items: [
-                { title: 'Home', path: '/' },
-                { title: 'About', path: '/about' },
+                //{ title: 'Home', path: '/' },
+                //{ title: 'About', path: '/about' },
+                { title: '회원 검색', path: '/member' },
+                { title: '기술분류 검색', path: '/tech' },
+                { title: '기타 기술분류 검색', path: '/tech/etc' },
+                { title: '출원번호 검색', path: '/number' },
                 // Add more navigation items as needed
             ],
         }),

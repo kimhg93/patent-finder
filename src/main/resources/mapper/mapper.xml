@@ -3,9 +3,41 @@
 
 <mapper namespace="default-mapper">
 
-    <select id="selectOneTest" resultType="String">
-        SELECT 'TEST STRING'
-        FROM DUAL
-        </select>
+    <select id="selectTechField" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        SELECT A.TechGroupNo AS TECH_GROUP_NO
+             , A.TechGroupNm AS TECH_GROUP_NM
+             , B.TechFieldNo AS TECH_FIELD_NO
+             , B.TechFieldNm AS TECH_FIELD_NM
+             , CONCAT('/tech/', B.TechFieldNo) AS URL
+          FROM PATENT.TechGroup A
+             , PATENT.TechField B
+         WHERE A.TechGroupNo = B.TechGroupNo
+           AND A.TechGroupNo < 7
+        ]]>
+    </select>
+
+    <select id="selectTechItems" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        SELECT A.TechFieldNm AS TECH_FIELD_NM
+             , A.TechFieldNo AS TECH_FIELD_NO
+             , B.TechItemNo AS TECH_ITEM_NO
+             , B.TechItemNm AS TECH_ITEM_NM
+          FROM  PATENT.TechField A
+              , PATENT.TechItem B
+         WHERE A.TechFieldNo = B.TechFieldNo
+           AND A.TechFieldNo = #{techFieldNo }
+        ]]>
+    </select>
+
+    <select id="selectTechEtcs" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        SELECT TechFieldNo AS TECH_FIELD_NO
+             , TechFieldNm AS TECH_FIELD_NM
+             , TechFieldType AS TECH_FIELD_TYPE
+          FROM PATENT.TechField A
+         WHERE TechGroupNo = 7
+        ]]>
+    </select>
 
 </mapper>
