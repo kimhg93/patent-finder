@@ -28,7 +28,33 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Build with Gradle
+      run: ./gradlew clean build
     - name: Build with Gradle
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
         arguments: build
+
+
+# ... 기존 워크플로우 내용 ...
+
+    # Gradle build 후에 이어서 다음 스텝을 추가
+    - name: Copy JAR to Compute Engine
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      run: |
+        echo "$GCP_SA_KEY" > service-account.json
+        gcloud auth activate-service-account --key-file=service-account.json
+        gcloud compute scp ./build/libs/your-jar-file.jar game_kimhg@instance-1:/usr/local/dev
+
+    - name: Execute JAR on Compute Engine
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      run: |
+        echo "$GCP_SA_KEY" > service-account.json
+        gcloud auth activate-service-account --key-file=service-account.json
+        gcloud compute ssh game_kimhg@instance-1 --command="java -jar /usr/local/dev/your-jar-file.jar"
+
