@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finder.patent.ipc.mapper">
+
+    <!-- 출원번호 상세 IPC   -->
+    <select id="selectPatentListByNumberDetail" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.ipc.mapper.selectPatentListByTechDetail  -->
+        <![CDATA[
+        SELECT IPC12
+             , AppNo        AS APP_NO
+             , AppDate      AS APP_DATE
+             , InvTitle     AS INV_TITLE
+             , AppNm        AS INV_NM
+             , RegNo        AS REG_NO
+             , RegDate      AS REG_DATE
+             , EstPrice     AS EST_PRICE
+             , ContactNum   AS CONTACT_NUM
+          FROM PATENT.PatentList
+         WHERE IPC12 IN (SELECT IPC12 
+                           FROM PATENT.PatentList
+                          WHERE AppNo = #{appNumber })
+         ORDER BY AppNo
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <!-- 출원번호 광범위 IPC  -->
+    <select id="selectPatentListByNumberRange" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.ipc.mapper.selectPatentListByTechRange  -->
+        <![CDATA[
+        SELECT IPC1
+             , AppNo        AS APP_NO
+	         , AppDate      AS APP_DATE
+             , InvTitle     AS INV_TITLE
+             , AppNm        AS INV_NM
+             , RegNo        AS REG_NO
+             , RegDate      AS REG_DATE
+             , EstPrice     AS EST_PRICE
+             , ContactNum   AS CONTACT_NUM
+          FROM PATENT.PatentList
+         WHERE IPC1 IN (SELECT IPC1
+                          FROM PATENT.PatentList
+				         WHERE AppNo = #{appNumber })
+		 ORDER BY AppNo
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <select id="selectParentListByNumberDetailCount" resultType="Integer">
+        <!-- com.finder.patent.ipc.mapper.selectParentListByNumberDetailCount  -->
+        <![CDATA[
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList
+         WHERE IPC12 IN (SELECT IPC12
+                           FROM PATENT.PatentList
+                          WHERE AppNo = #{appNumber })
+        ]]>
+    </select>
+
+    <select id="selectPatentListByNumberRangeCount" resultType="Integer">
+        <!-- com.finder.patent.ipc.mapper.selectPatentListByNumberRangeCount  -->
+        <![CDATA[
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList
+         WHERE IPC1 IN (SELECT IPC1
+                          FROM PATENT.PatentList
+				         WHERE AppNo = #{appNumber });
+        ]]>
+    </select>
+
+</mapper>
