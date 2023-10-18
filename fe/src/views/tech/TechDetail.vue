@@ -1,13 +1,30 @@
 <template>
     <div class="container">
+        <div class="radio-container">
+            <v-radio-group inline v-model="searchType">
+                <v-radio color="primary" value="detail" class="radio">
+                    <template v-slot:label>
+                        <span class="radio-label">그룹으로 보기(상세 검색 가능)</span>
+                    </template>
+                </v-radio>
+
+                <v-radio color="success" value="range" class="radio">
+                    <template v-slot:label>
+                        <span class="radio-label">클래스로 보기(광범위 검색)</span>
+                    </template>
+                </v-radio>
+            </v-radio-group>
+        </div>
+
         <h1>{{title}}</h1>
+
         <div class="tech-detail">
             <v-app id="inspire">
                 <v-main>
                     <v-container>
                         <v-row>
                             <v-col v-for="(item, index) in items" :key="item.techItemNo" cols="12" sm="6" md="4">
-                                <v-card height="130" @click="goTo(`/tech/${this.techItemNo}/1`)">
+                                <v-card height="130" @click="goTo(`/main/${this.searchType}/${item.techFieldNo}/${item.techItemNo}`)">
                                     <v-card-title class="title">{{ index+1 }}. {{ item.techItemNm }}</v-card-title>
                                 </v-card>
                             </v-col>
@@ -16,12 +33,14 @@
                 </v-main>
             </v-app>
         </div>
+
     </div>
 </template>
 
 
 <script>
     import axios from 'axios';
+    import emitter from '@/components/event-bus';
 
     export default {
         name: "TechDetail",
@@ -30,6 +49,7 @@
             return {
                 items: [ ],
                 title: "",
+                searchType: "",
             };
 
         },
@@ -41,6 +61,10 @@
         },
         methods: {
             goTo(link) {
+                if(this.searchType == "") {
+                    emitter.emit('show-alert', { message: "검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", type: "warning" });
+                    return;
+                }
                 window.location.href = link;
             },
             async fetchItemData() {
@@ -83,5 +107,16 @@
         overflow: visible;
         font-size: 18px;
         vertical-align: middle;
+    }
+    .radio-container {
+        margin: 40px 0px;
+    }
+    .radio {
+        margin: 0px 20px;
+    }
+    .radio-label {
+        font-size: 18px;
+        color: black;
+        font-weight: bold;
     }
 </style>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.finder.patent.tech.mapper">
+
+    <select id="selectTechField" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.selectTechField -->
+        <![CDATA[
+        SELECT A.TechGroupNo AS TECH_GROUP_NO
+             , A.TechGroupNm AS TECH_GROUP_NM
+             , B.TechFieldNo AS TECH_FIELD_NO
+             , B.TechFieldNm AS TECH_FIELD_NM
+             , CONCAT('/tech/', B.TechFieldNo) AS URL
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+            ON A.TechGroupNo = B.TechGroupNo
+         WHERE A.TechGroupNo < 7
+        ]]>
+    </select>
+
+    <select id="selectTechItems" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.selectTechItems -->
+        <![CDATA[
+        SELECT A.TechFieldNm AS TECH_FIELD_NM
+             , A.TechFieldNo AS TECH_FIELD_NO
+             , B.TechItemNo AS TECH_ITEM_NO
+             , B.TechItemNm AS TECH_ITEM_NM
+          FROM  PATENT.TechField A
+         INNER JOIN PATENT.TechItem B
+            ON A.TechFieldNo = B.TechFieldNo
+         WHERE A.TechFieldNo = #{techFieldNo }
+         ORDER BY TECH_ITEM_NO
+        ]]>
+    </select>
+
+    <select id="selectTechEtcs" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.selectTechEtcs -->
+        <![CDATA[
+        SELECT A.TechFieldNo AS TECH_FIELD_NO
+             , A.TechFieldNm AS TECH_FIELD_NM
+             , A.TechFieldType AS TECH_FIELD_TYPE
+             , B.TechItemNo AS TECH_ITEM_NO
+             , B.TechItemNm AS TECH_ITEM_NM
+          FROM PATENT.TechField A
+         INNER JOIN PATENT.TechItem B
+            ON A.TechFieldNo = B.TechFieldNo
+         WHERE TechGroupNo = 7
+        ]]>
+    </select>
+
+    <!-- 기술분류 상세 IPC   -->
+    <select id="selectPatentListByTechDetail" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechDetail -->
+        <![CDATA[
+        SELECT A.TechGroupNo    AS TECH_GROUP_NO
+             , A.TechGroupNm    AS TECH_GROUP_NM
+             , B.TechFieldNo    AS TECH_FIELD_NO
+             , B.TechFieldNm    AS TECH_FIELD_NM
+             , C.TechItemNo     AS TECH_ITEM_NO
+             , C.TechItemNm     AS TECH_ITEM_NM
+             , D.MG_IPCNo       AS MG_IPC_NO
+             , D.MG_IPCCd       AS MG_IPC_CD
+             , E.AppNo          AS APP_NO
+             , E.AppDate        AS APP_DATE
+             , E.InvTitle       AS INV_TITLE
+             , E.InvNm          AS INV_NM
+             , E.RegNo          AS REG_NO
+             , E.RegDate        AS REG_DATE
+             , E.EstPrice       AS EST_PRICE
+             , E.ContactNum     AS CONTACT_NUM
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+            ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.MG_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON E.IPC12 = D.MG_IPCCd
+         WHERE A.TechGroupType ='MGSC'
+           AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.MG_IPCNo
+             , D.MG_IPCCd
+             , E.AppNo
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <!-- 기술분류 광범위 IPC  -->
+    <select id="selectPatentListByTechRange" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechRange -->
+        <![CDATA[
+        SELECT A.TechGroupNo    AS TECH_GROUP_NO
+             , A.TechGroupNm    AS TECH_GROUP_NM
+             , B.TechFieldNo    AS TECH_FIELD_NO
+             , B.TechFieldNm    AS TECH_FIELD_NM
+             , C.TechItemNo     AS TECH_ITEM_NO
+             , C.TechItemNm     AS TECH_ITEM_NM
+             , D.SC_IPCNo       AS MG_IPC_NO
+             , D.SC_IPCCd       AS MG_IPC_CD
+             , E.AppNo          AS APP_NO
+             , E.AppDate        AS APP_DATE
+             , E.InvTitle       AS INV_TITLE
+             , E.InvNm          AS INV_NM
+             , E.RegNo          AS REG_NO
+             , E.RegDate        AS REG_DATE
+             , E.EstPrice       AS EST_PRICE
+             , E.ContactNum     AS CONTACT_NUM
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+	        ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.SC_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON E.IPC1 = D.SC_IPCCd
+         WHERE A.TechGroupType ='MGSC'
+           AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.SC_IPCNo
+             , D.SC_IPCCd
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <!-- 기타 기술분류 상세 IPC   -->
+    <select id="selectPatentListByTechEtcDetail" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcDetail -->
+        <![CDATA[
+        SELECT A.TechGroupNo    AS TECH_GROUP_NO
+             , A.TechGroupNm    AS TECH_GROUP_NM
+             , B.TechFieldNo    AS TECH_FIELD_NO
+             , B.TechFieldNm    AS TECH_FIELD_NM
+             , C.TechItemNo     AS TECH_ITEM_NO
+             , C.TechItemNm     AS TECH_ITEM_NM
+             , D.MG_IPCNo       AS MG_IPC_NO
+             , D.MG_IPCCd       AS MG_IPC_CD
+             , E.AppNo          AS APP_NO
+             , E.AppDate        AS APP_DATE
+             , E.InvTitle       AS INV_TITLE
+             , E.InvNm          AS INV_NM
+             , E.RegNo          AS REG_NO
+             , E.RegDate        AS REG_DATE
+             , E.EstPrice       AS EST_PRICE
+             , E.ContactNum     AS CONTACT_NUM
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+	        ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.MG_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON E.IPC1 = D.MG_IPCCd
+         WHERE A.TechGroupType ='ETC0'
+           AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.MG_IPCNo
+             , D.MG_IPCCd
+             , E.AppNo
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <!-- 기타 기술분류 광범위 IPC  -->
+    <select id="selectPatentListByTechEtcRange" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcRange -->
+        <![CDATA[
+        SELECT A.TechGroupNo    AS TECH_GROUP_NO
+             , A.TechGroupNm    AS TECH_GROUP_NM
+             , B.TechFieldNo    AS TECH_FIELD_NO
+             , B.TechFieldNm    AS TECH_FIELD_NM
+             , C.TechItemNo     AS TECH_ITEM_NO
+             , C.TechItemNm     AS TECH_ITEM_NM
+             , D.SC_IPCNo       AS MG_IPC_NO
+             , D.SC_IPCCd       AS MG_IPC_CD
+             , E.AppNo          AS APP_NO
+             , E.AppDate        AS APP_DATE
+             , E.InvTitle       AS INV_TITLE
+             , E.InvNm          AS INV_NM
+             , E.RegNo          AS REG_NO
+             , E.RegDate        AS REG_DATE
+             , E.EstPrice       AS EST_PRICE
+             , E.ContactNum     AS CONTACT_NUM
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+        	ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.SC_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON LEFT(E.IPC1,3) = D.SC_IPCCd
+         WHERE A.TechGroupType ='ETC0'
+           AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.SC_IPCNo
+             , D.SC_IPCCd
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+
+    <select id="selectPatentListByTechDetailCount" resultType="Integer">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechDetailCount -->
+        <![CDATA[
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+            ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.MG_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON E.IPC12 = D.MG_IPCCd
+         WHERE A.TechGroupType ='MGSC'
+           AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.MG_IPCNo
+             , D.MG_IPCCd
+             , E.AppNo
+        ]]>
+    </select>
+
+    <select id="selectPatentListByTechRangeCount" resultType="Integer">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechRangeCount -->
+        <![CDATA[
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+	        ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.SC_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON E.IPC1 = D.SC_IPCCd
+         WHERE A.TechGroupType ='MGSC'
+           AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.SC_IPCNo
+             , D.SC_IPCCd
+        ]]>
+    </select>
+
+    <select id="selectPatentListByTechEtcDetailCount" resultType="Integer">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcDetailCount -->
+        <![CDATA[
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+	        ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.MG_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON E.IPC1 = D.MG_IPCCd
+         WHERE A.TechGroupType ='ETC0'
+           AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.MG_IPCNo
+             , D.MG_IPCCd
+             , E.AppNo
+        ]]>
+    </select>
+
+    <select id="selectPatentListByTechEtcRangeCount" resultType="Integer">
+        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcRangeCount -->
+        <![CDATA[
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+        	ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.SC_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN PATENT.PatentList E
+            ON LEFT(E.IPC1,3) = D.SC_IPCCd
+         WHERE A.TechGroupType ='ETC0'
+           AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
+           AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+         ORDER BY D.SC_IPCNo
+             , D.SC_IPCCd;
+        ]]>
+    </select>
+
+    <select id="getFieldAndItem" parameterType="String" resultType="com.finder.patent.config.CamelMap">
+        <!-- com.finder.patent.tech.mapper.getFieldAndItem -->
+        <![CDATA[
+        SELECT A.TechGroupNo AS TECH_GROUP_NO
+             , A.TechGroupNm AS TECH_GROUP_NM
+             , B.TechFieldNo AS TECH_FIELD_NO
+             , B.TechFieldNm AS TECH_FIELD_NM
+             , C.TechItemNo AS TECH_ITEM_NO
+             , C.TechItemNm AS TECH_ITEM_NM
+             , D.SC_IPCNo AS SC_IPC_NO
+             , D.SC_IPCCd AS SC_IPC_CD
+          FROM PATENT.TechGroup A
+         INNER JOIN PATENT.TechField B
+            ON A.TechGroupNo = B.TechGroupNo
+         INNER JOIN PATENT.TechItem C
+            ON B.TechFieldNo = C.TechFieldNo
+         INNER JOIN PATENT.SC_IPC D
+            ON C.TechItemNo = D.TechItemNo
+         INNER JOIN (SELECT IPC1
+                       FROM PATENT.PatentList
+                      WHERE AppNo = #{number } ) E
+            ON D.SC_IPCCd = E.IPC1
+         WHERE 1=1
+         LIMIT 1
+        ]]>
+    </select>
+
+</mapper>

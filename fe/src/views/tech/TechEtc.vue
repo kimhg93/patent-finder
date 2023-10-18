@@ -1,18 +1,33 @@
 <template>
     <div class="container">
-        <v-table :hover="false" > <!-- 전체 테이블에 대한 hover를 비활성화 -->
+        <div class="radio-container">
+            <v-radio-group inline v-model="searchType">
+                <v-radio color="primary" value="detail" class="radio">
+                    <template v-slot:label>
+                        <span class="radio-label">그룹으로 보기(상세 검색 가능)</span>
+                    </template>
+                </v-radio>
+
+                <v-radio color="success" value="range" class="radio">
+                    <template v-slot:label>
+                        <span class="radio-label">클래스로 보기(광범위 검색)</span>
+                    </template>
+                </v-radio>
+            </v-radio-group>
+        </div>
+        <v-table :hover="false" class="elevation-1" > <!-- 전체 테이블에 대한 hover를 비활성화 -->
             <thead>
             <tr>
-                <th class="text-center table-header">기타 기술 분야1</th>
-                <th class="text-center">기타 기술 분야2</th>
+                <th class="text-center table-header border-sm" >기타 기술 분야1</th>
+                <th class="text-center table-header border-sm">기타 기술 분야2</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item, index) in combinedItems" :key="index">
-                <td @click="goToLink(item.ETC1Link)" class="hoverable">
+                <td @click="goToLink(item.ETC1Link)" class="hoverable grid-td border-sm" width="500">
                     {{ item.ETC1 }}
                 </td>
-                <td @click="goToLink(item.ETC2Link)" class="hoverable">
+                <td @click="goToLink(item.ETC2Link)" class="hoverable grid-td border-sm" width="500">
                     {{ item.ETC2 }}
                 </td>
             </tr>
@@ -24,20 +39,16 @@
 
 
 <script>
-
     import axios from "axios";
+    import emitter from '@/components/event-bus';
 
     export default {
         name: "TechEtc",
         data() {
             return {
-                headers: [
-                    { text: 'ETC1', value: 'techFieldNo' },
-                    { text: 'ETC2', value: 'techFieldNm' },
-                ],
-                techFields: [
-                ],
+                techFields: [], // 데이터를 저장할 배열
                 combinedItems: [],
+                searchType: "",
             }
         },
         created() {
@@ -47,29 +58,36 @@
             async fetchItemData() {
                 try {
                     const response = await axios.get(`/api/tech/etc`);
-                    this.items = response.data;
+                    this.techFields = response.data; // 응답 데이터를 techFields에 저장
                     this.combineItems();
                 } catch (e) {
                     console.error(e);
                 }
             },
             combineItems() {
-                const itemsETC1 = this.techFields.filter(item => item.techFieldType === "ETC1");
-                const itemsETC2 = this.techFields.filter(item => item.techFieldType === "ETC2");
+                const itemsETC1 = this.techFields.filter(item => item.techFieldType == "ETC1");
+                const itemsETC2 = this.techFields.filter(item => item.techFieldType == "ETC2");
 
-                // ETC1과 ETC2의 길이 중 더 긴 것을 기준으로 합니다.
                 const maxLength = Math.max(itemsETC1.length, itemsETC2.length);
 
                 for (let i = 0; i < maxLength; i++) {
-                    // 항목이 없는 경우를 위해 빈 문자열을 기본값으로 사용합니다.
-                    const itemETC1 = itemsETC1[i] ? itemsETC1[i].techFieldNm : "";
-                    const itemETC2 = itemsETC2[i] ? itemsETC2[i].techFieldNm : "";
+                    const itemETC1 = itemsETC1[i] ? { name: itemsETC1[i].techFieldNm, link: `${itemsETC1[i].techFieldNo}/${itemsETC1[i].techItemNo}` /* ETC1 링크 생성 로직 */ } : { name: "", link: "#" };
+                    const itemETC2 = itemsETC2[i] ? { name: itemsETC2[i].techFieldNm, link: `${itemsETC2[i].techFieldNo}/${itemsETC2[i].techItemNo}` /* ETC2 링크 생성 로직 */ } : { name: "", link: "#" };
 
-                    this.combinedItems.push({ ETC1: itemETC1, ETC2: itemETC2 });
+                    this.combinedItems.push({
+                        ETC1: itemETC1.name,
+                        ETC1Link: itemETC1.link,
+                        ETC2: itemETC2.name,
+                        ETC2Link: itemETC2.link
+                    });
                 }
             },
             goToLink(link) {
-                window.location.href = link; // 이 부분은 실제 링크 구조에 따라 변경해야 합니다.
+                if(this.searchType == "") {
+                    emitter.emit('show-alert', { message: "검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", type: "warning" });
+                    return;
+                }
+                window.location.href = `/etc/${this.searchType}/${link}`;
             },
         },
     };
@@ -86,9 +104,27 @@
         font-weight: 900;
     }
     .hoverable {
-        cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+        cursor: pointer;
     }
     .hoverable:hover {
-        background-color: lightgray; /* 원하는 hover 효과 색상으로 변경 */
+        background-color: lightgray;
+    }
+    .grid-td {
+        height: 45px !important;
+    }
+    .radio-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+        width: 700px;
+    }
+    .radio {
+        margin: 0px 20px;
+    }
+    .radio-label {
+        font-size: 18px;
+        color: black;
+        font-weight: bold;
     }
 </style>

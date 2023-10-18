@@ -5,10 +5,12 @@ import 'vuetify/styles'
 // Vuetify
 import { createVuetify } from 'vuetify'
 import { VDataTable } from 'vuetify/labs/VDataTable'
+import { VDataTableServer } from 'vuetify/labs/VDataTable'
 
 export default createVuetify({
     components: {
         VDataTable,
+        VDataTableServer
     },
 })
 
