@@ -5,7 +5,6 @@
                 <v-list-item v-for="item in items" :title="item.title" :key="item.title" @click="navigate(item)">
                 </v-list-item>
             </v-list>
-
         </v-navigation-drawer>
 
         <v-app-bar elevation="2" flat>

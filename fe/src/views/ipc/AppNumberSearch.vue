@@ -1,5 +1,47 @@
 <template>
     <div class="container">
+        <v-card
+                class="mx-auto"
+                color="grey-lighten-3"
+                max-width="95%">
+            <v-card-text>
+                <v-row no-gutters>
+                    <!-- Text Field Column -->
+                    <v-col cols="12" md="3" lg="3">
+                        <v-text-field
+                                :loading="loading"
+                                density="compact"
+                                variant="solo"
+                                label="출원번호"
+                                append-inner-icon="mdi-magnify"
+                                hide-details
+                                v-model="appNumber"
+                                @click:append-inner="searchClick">
+                        </v-text-field>
+                    </v-col>
+
+                    <!-- Radio Group Column -->
+                    <v-col cols="12" md="4" lg="4">
+                        <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
+                            <v-radio color="primary" value="detail" class="radio">
+                                <template v-slot:label>
+                                    <span class="radio-label">그룹으로 보기(상세 검색 가능)</span>
+                                </template>
+                            </v-radio>
+
+                            <v-radio color="success" value="range" class="radio">
+                                <template v-slot:label>
+                                    <span class="radio-label">클래스로 보기(광범위 검색)</span>
+                                </template>
+                            </v-radio>
+                        </v-radio-group>
+                    </v-col>
+                    <v-col cols="12" md="1" lg="1" align-self="center" class="btn-search" >
+                        <v-btn @click="searchClick()">검색</v-btn>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
         <div class="grid-container">
             <v-data-table-server
                     class="elevation-1"
@@ -37,16 +79,21 @@
 
 <script>
     import axios from "axios";
+    import emitter from '@/components/event-bus';
 
     export default {
         name: "TechGrid",
-        props: ["source", "searchType", "techFieldNo", "techItemNo"],
+        props: [],
         data() {
             return {
                 loading: true,
                 itemsPerPage: 30,
                 currentPage: 1,
                 totalCount: 0,
+                techFieldNo: 0,
+                techItemNo: 0,
+                searchType: "",
+                appNumber: "",
                 headers: [
                     { width:"90",title: '출원번호', align: 'center', sortable: false, key: 'appNo' },
                     { width:"70",title: '출원일자', align: 'center', key: 'appDate' },
@@ -62,21 +109,14 @@
             };
         },
         methods: {
-            loadItems({page, itemsPerPage, sortBy}) {
-                this.currentPage = page;
-                this.itemsPerPage = itemsPerPage;
-                console.log(sortBy);
-                this.fetchData();
-            } ,
             async fetchData() {
                 this.loading = true;
                 try {
-                    const url = `/api/data/tech/${this.techFieldNo}/${this.techItemNo}`;
+                    const url = `/api/data/number/${this.appNumber}`;
 
                     const response = await axios.get(url, {
                         params: {
                             searchType: this.searchType,
-                            source: this.source,
                             page: this.currentPage,
                             size: this.itemsPerPage,
                         },
@@ -90,13 +130,27 @@
                     this.loading = false;
                 }
             },
+
+            loadItems({page, itemsPerPage, sortBy}) {
+                this.currentPage = page;
+                this.itemsPerPage = itemsPerPage;
+                console.log(sortBy);
+                this.fetchData();
+            },
             showStatus(appNo) {
                 let options = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=1000, height=1000, top=0,left=0";
                 window.open(`http://kibc24.com/search/search.php?mode=realtime&linkNumber=${appNo}`, "_blank", options);
             },
+            searchClick() {
+                if(this.searchType == "") {
+                    emitter.emit('show-alert', { message: "검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", type: "warning" });
+                    return;
+                }
+                this.fetchData();
+            },
+
         },
         created() {
-            this.fetchData();
         },
     };
 </script>
@@ -104,10 +158,11 @@
 <style scoped>
     .container {
         max-height: 900px;
+        margin-top: 10px;
     }
     .grid-container{
         max-width:95%;
-        margin: 50px auto;
+        margin: 30px auto;
         max-height: 900px;
     }
     :deep(.v-data-table__th) {
@@ -133,5 +188,11 @@
     }
     .btn-status > :deep(.v-btn__content) {
         font-size: 12px;
+    }
+    .rdo-grp {
+        margin-top: 5px;
+    }
+    .btn-search > button {
+        margin-left: 10px;
     }
 </style>
