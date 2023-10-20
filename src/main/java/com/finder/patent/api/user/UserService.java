@@ -12,28 +12,31 @@ public class UserService {
 
     private final UserDao userDao;
 
-    public Map<String, Object> getFieldAndItem(String number) {
-        return userDao.getFieldAndItem(number);
+    public List<Map<String, Object>> selectFinderData(Map<String, Object> param) {
+        String type = param.get("searchType").toString();
+        return SearchType.fromString(type, 1).fetchData(param, userDao);
     }
 
-    public List<Map<String, Object>> selectPatentListByNumber(Map<String, Object> param) {
-        String searchType = param.get("searchType").toString();
-
-        if("detail".equalsIgnoreCase(searchType)){
-            return userDao.selectPatentListByNumberDetail(param);
-        } else {
-            return userDao.selectPatentListByNumberRange(param);
-        }
-
+    public Integer selectFinderDataCount(Map<String, Object> param) {
+        String type = param.get("searchType").toString();
+        return SearchType.fromString(type, 1).fetchCount(param, userDao);
     }
 
-    public Integer selectParentListByNumberCount(Map<String, Object> param) {
-        String searchType = param.get("searchType").toString();
+    public List<Map<String, Object>> selectFinderDetailData(Map<String, Object> param, int buttonType) {
+        String type = param.get("searchType").toString();
+        return SearchType.fromString(type, buttonType).fetchData(param, userDao);
+    }
 
-        if("detail".equalsIgnoreCase(searchType)){
-            return userDao.selectParentListByNumberDetailCount(param);
-        } else {
-            return userDao.selectPatentListByNumberRangeCount(param);
-        }
+    public Integer selectFinderDetailDataCount(Map<String, Object> param, int buttonType) {
+        String type = param.get("searchType").toString();
+        return SearchType.fromString(type, buttonType).fetchCount(param, userDao);
+    }
+
+    public List<Map<String, Object>> selectSellerData(Map<String, Object> param) {
+        return userDao.selectSellerData(param);
+    }
+
+    public Integer selectSellerDataCount(Map<String, Object> param) {
+        return userDao.selectSellerDataCount(param);
     }
 }

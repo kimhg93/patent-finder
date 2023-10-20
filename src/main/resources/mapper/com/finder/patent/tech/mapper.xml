@@ -4,8 +4,8 @@
 <mapper namespace="com.finder.patent.tech.mapper">
 
     <select id="selectTechField" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.selectTechField -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectTechField */
         SELECT A.TechGroupNo AS TECH_GROUP_NO
              , A.TechGroupNm AS TECH_GROUP_NM
              , B.TechFieldNo AS TECH_FIELD_NO
@@ -19,8 +19,8 @@
     </select>
 
     <select id="selectTechItems" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.selectTechItems -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectTechItems */
         SELECT A.TechFieldNm AS TECH_FIELD_NM
              , A.TechFieldNo AS TECH_FIELD_NO
              , B.TechItemNo AS TECH_ITEM_NO
@@ -34,8 +34,8 @@
     </select>
 
     <select id="selectTechEtcs" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.selectTechEtcs -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectTechEtcs */
         SELECT A.TechFieldNo AS TECH_FIELD_NO
              , A.TechFieldNm AS TECH_FIELD_NM
              , A.TechFieldType AS TECH_FIELD_TYPE
@@ -50,8 +50,8 @@
 
     <!-- 기술분류 상세 IPC   -->
     <select id="selectPatentListByTechDetail" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechDetail -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechDetail */
         SELECT A.TechGroupNo    AS TECH_GROUP_NO
              , A.TechGroupNm    AS TECH_GROUP_NM
              , B.TechFieldNo    AS TECH_FIELD_NO
@@ -89,8 +89,8 @@
 
     <!-- 기술분류 광범위 IPC  -->
     <select id="selectPatentListByTechRange" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechRange -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechRange */
         SELECT A.TechGroupNo    AS TECH_GROUP_NO
              , A.TechGroupNm    AS TECH_GROUP_NM
              , B.TechFieldNo    AS TECH_FIELD_NO
@@ -127,8 +127,8 @@
 
     <!-- 기타 기술분류 상세 IPC   -->
     <select id="selectPatentListByTechEtcDetail" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcDetail -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechEtcDetail */
         SELECT A.TechGroupNo    AS TECH_GROUP_NO
              , A.TechGroupNm    AS TECH_GROUP_NM
              , B.TechFieldNo    AS TECH_FIELD_NO
@@ -166,8 +166,8 @@
 
     <!-- 기타 기술분류 광범위 IPC  -->
     <select id="selectPatentListByTechEtcRange" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcRange -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechEtcRange */
         SELECT A.TechGroupNo    AS TECH_GROUP_NO
              , A.TechGroupNm    AS TECH_GROUP_NM
              , B.TechFieldNo    AS TECH_FIELD_NO
@@ -204,8 +204,8 @@
 
 
     <select id="selectPatentListByTechDetailCount" resultType="Integer">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechDetailCount -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechDetailCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.TechGroup A
          INNER JOIN PATENT.TechField B
@@ -226,8 +226,8 @@
     </select>
 
     <select id="selectPatentListByTechRangeCount" resultType="Integer">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechRangeCount -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechRangeCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.TechGroup A
          INNER JOIN PATENT.TechField B
@@ -247,8 +247,8 @@
     </select>
 
     <select id="selectPatentListByTechEtcDetailCount" resultType="Integer">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcDetailCount -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechEtcDetailCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.TechGroup A
          INNER JOIN PATENT.TechField B
@@ -269,8 +269,8 @@
     </select>
 
     <select id="selectPatentListByTechEtcRangeCount" resultType="Integer">
-        <!-- com.finder.patent.tech.mapper.selectPatentListByTechEtcRangeCount -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.selectPatentListByTechEtcRangeCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.TechGroup A
          INNER JOIN PATENT.TechField B
@@ -290,8 +290,8 @@
     </select>
 
     <select id="getFieldAndItem" parameterType="String" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.tech.mapper.getFieldAndItem -->
         <![CDATA[
+        /* com.finder.patent.tech.mapper.getFieldAndItem */
         SELECT A.TechGroupNo AS TECH_GROUP_NO
              , A.TechGroupNm AS TECH_GROUP_NM
              , B.TechFieldNo AS TECH_FIELD_NO
