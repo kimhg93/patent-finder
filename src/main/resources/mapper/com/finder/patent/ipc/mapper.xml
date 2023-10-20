@@ -5,8 +5,8 @@
 
     <!-- 출원번호 상세 IPC   -->
     <select id="selectPatentListByNumberDetail" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.ipc.mapper.selectPatentListByTechDetail  -->
         <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectPatentListByTechDetail */
         SELECT IPC12
              , AppNo        AS APP_NO
              , AppDate      AS APP_DATE
@@ -27,8 +27,8 @@
 
     <!-- 출원번호 광범위 IPC  -->
     <select id="selectPatentListByNumberRange" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.ipc.mapper.selectPatentListByTechRange  -->
         <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectPatentListByTechRange */
         SELECT IPC1
              , AppNo        AS APP_NO
 	         , AppDate      AS APP_DATE
@@ -48,8 +48,8 @@
     </select>
 
     <select id="selectParentListByNumberDetailCount" resultType="Integer">
-        <!-- com.finder.patent.ipc.mapper.selectParentListByNumberDetailCount  -->
         <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectParentListByNumberDetailCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.PatentList
          WHERE IPC12 IN (SELECT IPC12
@@ -59,8 +59,8 @@
     </select>
 
     <select id="selectPatentListByNumberRangeCount" resultType="Integer">
-        <!-- com.finder.patent.ipc.mapper.selectPatentListByNumberRangeCount  -->
         <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectPatentListByNumberRangeCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.PatentList
          WHERE IPC1 IN (SELECT IPC1

@@ -3,69 +3,250 @@
 
 <mapper namespace="com.finder.patent.user.mapper">
 
-    <!-- 출원번호 상세 IPC   -->
-    <select id="selectPatentListByNumberDetail" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.ipc.mapper.selectPatentListByTechDetail  -->
+    <!-- 중소기업 : 본인 List 보여주기 - 상세 IPC -->
+    <select id="selectFinderDataDetail" resultType="com.finder.patent.config.CamelMap">
         <![CDATA[
-        SELECT IPC12
-             , AppNo        AS APP_NO
-             , AppDate      AS APP_DATE
-             , InvTitle     AS INV_TITLE
-             , AppNm        AS INV_NM
-             , RegNo        AS REG_NO
-             , RegDate      AS REG_DATE
-             , EstPrice     AS EST_PRICE
-             , ContactNum   AS CONTACT_NUM
+        <!-- com.finder.patent.ipc.mapper.selectFinderDataDetail  -->
+        SELECT RegNo               AS REG_NO
+             , RegDate             AS REG_DATE
+             , AppNo               AS APP_NO
+             , AppDate             AS APP_DATE
+             , AppNm               AS APP_NM
+             , '현재상태 참조'      AS CON_DATE
+             , InvTitle            AS INV_TITLE
+             , IPC12               AS IPC
           FROM PATENT.PatentList
-         WHERE IPC12 IN (SELECT IPC12 
-                           FROM PATENT.PatentList
-                          WHERE AppNo = #{appNumber })
+         WHERE OrgIDNo IN (SELECT OrgIDNo
+                             FROM PATENT.OrgID
+                            WHERE OrgID = #{id }
+                              AND OrgPwd = #{password })
          ORDER BY AppNo
          LIMIT #{from }, #{size }
         ]]>
     </select>
 
-    <!-- 출원번호 광범위 IPC  -->
-    <select id="selectPatentListByNumberRange" resultType="com.finder.patent.config.CamelMap">
-        <!-- com.finder.patent.ipc.mapper.selectPatentListByTechRange  -->
+    <!-- 중소기업 : 본인 List 보여주기 - 광범위 IPC -->
+    <select id="selectFinderDataRange" resultType="com.finder.patent.config.CamelMap">
         <![CDATA[
-        SELECT IPC1
-             , AppNo        AS APP_NO
-	         , AppDate      AS APP_DATE
-             , InvTitle     AS INV_TITLE
-             , AppNm        AS INV_NM
-             , RegNo        AS REG_NO
-             , RegDate      AS REG_DATE
-             , EstPrice     AS EST_PRICE
-             , ContactNum   AS CONTACT_NUM
+        <!-- com.finder.patent.ipc.mapper.selectFinderDataRange  -->
+        SELECT RegNo            AS REG_NO
+             , RegDate          AS REG_DATE
+             , AppNo            AS APP_NO
+             , AppDate          AS APP_DATE
+             , AppNm            AS APP_NM
+             , '현재상태 참조'    AS CON_DATE
+             , InvTitle         AS INV_TITLE
+             , IPC1             AS IPC
           FROM PATENT.PatentList
-         WHERE IPC1 IN (SELECT IPC1
-                          FROM PATENT.PatentList
-				         WHERE AppNo = #{appNumber })
-		 ORDER BY AppNo
+         WHERE OrgIDNo IN (SELECT OrgIDNo
+                             FROM PATENT.OrgID
+                            WHERE OrgID = #{id }
+                              AND OrgPwd = #{password })
+         ORDER BY AppNo
          LIMIT #{from }, #{size }
         ]]>
     </select>
 
-    <select id="selectParentListByNumberDetailCount" resultType="Integer">
-        <!-- com.finder.patent.ipc.mapper.selectParentListByNumberDetailCount  -->
+    <select id="selectFinderDataDetailCount" resultType="Integer">
         <![CDATA[
+        <!-- com.finder.patent.ipc.mapper.selectFinderDataDetailCount  -->
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.PatentList
-         WHERE IPC12 IN (SELECT IPC12
-                           FROM PATENT.PatentList
-                          WHERE AppNo = #{appNumber })
+         WHERE OrgIDNo IN (SELECT OrgIDNo
+                             FROM PATENT.OrgID
+                            WHERE OrgID = #{id }
+                              AND OrgPwd = #{password })
         ]]>
     </select>
 
-    <select id="selectPatentListByNumberRangeCount" resultType="Integer">
-        <!-- com.finder.patent.ipc.mapper.selectPatentListByNumberRangeCount  -->
+    <select id="selectFinderDataRangeCount" resultType="Integer">
         <![CDATA[
+        <!-- com.finder.patent.ipc.mapper.selectFinderDataRangeCount  -->
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.PatentList
-         WHERE IPC1 IN (SELECT IPC1
-                          FROM PATENT.PatentList
-				         WHERE AppNo = #{appNumber });
+         WHERE OrgIDNo IN (SELECT OrgIDNo
+                             FROM PATENT.OrgID
+                            WHERE OrgID = #{id }
+                              AND OrgPwd = #{password })
+        ]]>
+    </select>
+
+
+    <!-- 중소기업 : 대학/연구소 상세 IPC -->
+    <select id="selectFinderDataUnivDetail" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataUnivDetail */
+        SELECT A.RegNo              AS REG_NO
+             , A.RegDate            AS REG_DATE
+             , A.AppNo              AS APP_NO
+             , A.AppDate            AS APP_DATE
+             , A.AppNm              AS APP_NM
+             , '현재상태 참조'        AS CON_DATE
+             , A.InvTitle           AS INV_TITLE
+             , A.EstPrice           AS EST_PRICE
+             , A.ContactNum         AS CONTACT_NUM
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 2 OR B.OrgNo = 4)
+           AND A.IPC12 = #{ipc }
+         ORDER BY B.OrgSort
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <!-- #중소기업 : 대학/연구소 광범위 IPC -->
+    <select id="selectFinderDataUnivRange" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataUnivRange */
+        SELECT A.RegNo              AS REG_NO
+             , A.RegDate            AS REG_DATE
+             , A.AppNo              AS APP_NO
+             , A.AppDate            AS APP_DATE
+             , A.AppNm              AS APP_NM
+             , '현재상태 참조'        AS CON_DATE
+             , A.InvTitle           AS INV_TITLE
+             , A.EstPrice           AS EST_PRICE
+             , A.ContactNum         AS CONTACT_NUM
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 2 OR B.OrgNo = 4)
+           AND A.IPC1 = #{ipc }
+         ORDER BY B.OrgSort
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <select id="selectFinderDataUnivDetailCount" resultType="Integer">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataDetailCount */
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 2 OR B.OrgNo = 4)
+           AND A.IPC12 = #{ipc }
+        ]]>
+    </select>
+
+    <select id="selectFinderDataUnivRangeCount" resultType="Integer">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataRangeCount */
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 2 OR B.OrgNo = 4)
+           AND A.IPC1 = #{ipc }
+        ]]>
+    </select>
+
+    <!-- #중소기업 : 경쟁사 상세 IPC -->
+    <select id="selectFinderDataCompDetail" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataCompDetail */
+        SELECT A.IPC12          AS IPC
+             , B.OrgNm          AS ORG_NM
+             , A.AppNm          AS APP_NM
+             , A.RegNo          AS REG_NO
+             , A.RegDate        AS REG_DATE
+             , A.AppNo          AS APP_NO
+             , A.AppDate        AS APP_DATE
+             , '현재상태 참조'    AS CON_DATE
+             , A.InvTitle       AS INV_TITLE
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 1 OR B.OrgNo = 3 OR B.OrgNo = 5 OR B.OrgNo = 6)
+           AND A.IPC12 = #{ipc }
+         ORDER BY B.OrgSort
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <!-- #중소기업 : 경쟁사 광범위 IPC -->
+    <select id="selectFinderDataCompRange" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataCompRange */
+        SELECT A.IPC1              AS IPC
+             , B.OrgNm             AS ORG_NM
+             , A.AppNm             AS APP_NM
+             , A.RegNo             AS REG_NO
+             , A.RegDate           AS REG_DATE
+             , A.AppNo             AS APP_NO
+             , A.AppDate           AS APP_DATE
+             , '현재상태 참조'       AS CON_DATE
+             , A.InvTitle          AS INV_TITLE
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 1 OR B.OrgNo = 3 OR B.OrgNo = 5 OR B.OrgNo = 6)
+           AND A.IPC1 = #{ipc }
+         ORDER BY B.OrgSort
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <select id="selectFinderDataCompDetailCount" resultType="Integer">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataCompDetailCount */
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 1 OR B.OrgNo = 3 OR B.OrgNo = 5 OR B.OrgNo = 6)
+           AND A.IPC12 = #{ipc }
+        ]]>
+    </select>
+
+    <select id="selectFinderDataCompRangeCount" resultType="Integer">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectFinderDataCompRangeCount */
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 1 OR B.OrgNo = 3 OR B.OrgNo = 5 OR B.OrgNo = 6)
+           AND A.IPC1 = #{ipc }
+        ]]>
+    </select>
+
+    <!-- 판매자 데이터 조회 -->
+    <select id="selectSellerData" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectSellerData */
+        SELECT A.RegNo              AS REG_NO
+             , A.RegDate            AS REG_DATE
+             , A.AppNo              AS APP_NO
+             , A.AppDate            AS APP_DATE
+             , A.AppNm              AS APP_NM
+             , '현재상태 참조'       AS CON_DATE
+             , A.InvTitle           AS INV_TITLE
+             , A.EstPrice           AS EST_PRICE
+             , A.ContactNum         AS CONTACT_NUM
+          FROM PATENT.PatentList AS A
+         INNER JOIN PATENT.OrgInfo AS B
+            ON A.OrgNo = B.OrgNo
+         WHERE (B.OrgNo = 2 OR B.OrgNo = 4)
+           AND A.OrgIDNo = (SELECT OrgIDNo
+                             FROM PATENT.OrgID
+                            WHERE OrgID = #{id }
+                              AND OrgPwd = #{password })
+         ORDER BY B.OrgSort
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <select id="selectSellerDataCount" resultType="Integer">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectSellerDataDetailCount */
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList
+         WHERE OrgIDNo IN (SELECT OrgIDNo
+                             FROM PATENT.OrgID
+                            WHERE OrgID = #{id }
+                              AND OrgPwd = #{password })
         ]]>
     </select>
 
