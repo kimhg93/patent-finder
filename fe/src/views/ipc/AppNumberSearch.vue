@@ -1,12 +1,8 @@
 <template>
     <div class="container">
-        <v-card
-                class="mx-auto"
-                color="grey-lighten-3"
-                max-width="95%">
+        <v-card class="mx-auto" color="grey-lighten-3" max-width="95%">
             <v-card-text>
                 <v-row no-gutters>
-                    <!-- Text Field Column -->
                     <v-col cols="12" md="3" lg="3">
                         <v-text-field
                                 :loading="loading"
@@ -19,8 +15,6 @@
                                 @click:append-inner="searchClick">
                         </v-text-field>
                     </v-col>
-
-                    <!-- Radio Group Column -->
                     <v-col cols="12" md="4" lg="4">
                         <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
                             <v-radio color="primary" value="detail" class="radio">
@@ -28,7 +22,6 @@
                                     <span class="radio-label">그룹으로 보기(상세 검색 가능)</span>
                                 </template>
                             </v-radio>
-
                             <v-radio color="success" value="range" class="radio">
                                 <template v-slot:label>
                                     <span class="radio-label">클래스로 보기(광범위 검색)</span>
@@ -36,7 +29,7 @@
                             </v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col cols="12" md="1" lg="1" align-self="center" class="btn-search" >
+                    <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" >
                         <v-btn @click="searchClick()">검색</v-btn>
                     </v-col>
                 </v-row>
@@ -54,7 +47,7 @@
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="loadItems">
+                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
@@ -65,7 +58,7 @@
                         <td class="grid-td">{{ item.regNo }}</td>
                         <td class="grid-td">{{ item.regDate }}</td>
                         <td class="grid-td">
-                            <v-btn class="btn-status" @click="showStatus(item.appNo)">현재상태보기<br></v-btn>
+                            <v-btn class="btn-status" @click="this.$showStatus(item.appNo)">현재상태보기<br></v-btn>
                         </td>
                         <td class="grid-td">{{ item.estPrice }}</td>
                         <td class="grid-td">{{ item.contactNum }}</td>
@@ -79,7 +72,6 @@
 
 <script>
     import axios from "axios";
-    import emitter from '@/components/event-bus';
 
     export default {
         name: "TechGrid",
@@ -121,9 +113,9 @@
                             size: this.itemsPerPage,
                         },
                     });
-
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
+                    if(isNaN(this.totalCount)) this.totalCount = 0;
                 } catch (e) {
                     console.error(e);
                 } finally {
@@ -131,26 +123,14 @@
                 }
             },
 
-            loadItems({page, itemsPerPage, sortBy}) {
-                this.currentPage = page;
-                this.itemsPerPage = itemsPerPage;
-                console.log(sortBy);
-                this.fetchData();
-            },
-            showStatus(appNo) {
-                let options = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=1000, height=1000, top=0,left=0";
-                window.open(`http://kibc24.com/search/search.php?mode=realtime&linkNumber=${appNo}`, "_blank", options);
-            },
             searchClick() {
                 if(this.searchType == "") {
-                    emitter.emit('show-alert', { message: "검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", type: "warning" });
+                    this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
                     return;
                 }
                 this.fetchData();
             },
 
-        },
-        created() {
         },
     };
 </script>
@@ -192,7 +172,10 @@
     .rdo-grp {
         margin-top: 5px;
     }
-    .btn-search > button {
+    .col-btn-search > button {
         margin-left: 10px;
+        background-color: #71838F;
+        color: #ffffff;
+        font-weight: bold;
     }
 </style>

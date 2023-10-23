@@ -3,10 +3,12 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import router from "@/router";
+import common from "@/common";
 
-loadFonts()
+loadFonts();
 
 createApp(App)
     .use(vuetify)
     .use(router)
-    .mount('#app')
+    .use(common)
+    .mount('#app');

@@ -18,16 +18,16 @@
         <v-table :hover="false" class="elevation-1" > <!-- 전체 테이블에 대한 hover를 비활성화 -->
             <thead>
             <tr>
-                <th class="text-center table-header border-sm" >기타 기술 분야1</th>
-                <th class="text-center table-header border-sm">기타 기술 분야2</th>
+                <th class="text-center table-header border-sm header-color" >기타 기술 분야1</th>
+                <th class="text-center table-header border-sm header-color">기타 기술 분야2</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(item, index) in combinedItems" :key="index">
-                <td @click="goToLink(item.ETC1Link)" class="hoverable grid-td border-sm" width="500">
+                <td @click="goTo(item.ETC1Link)" class="hoverable grid-td border-sm bg-color" width="500">
                     {{ item.ETC1 }}
                 </td>
-                <td @click="goToLink(item.ETC2Link)" class="hoverable grid-td border-sm" width="500">
+                <td @click="goTo(item.ETC2Link)" class="hoverable grid-td border-sm bg-color" width="500">
                     {{ item.ETC2 }}
                 </td>
             </tr>
@@ -40,7 +40,6 @@
 
 <script>
     import axios from "axios";
-    import emitter from '@/components/event-bus';
 
     export default {
         name: "TechEtc",
@@ -82,9 +81,9 @@
                     });
                 }
             },
-            goToLink(link) {
+            goTo(link) {
                 if(this.searchType == "") {
-                    emitter.emit('show-alert', { message: "검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", type: "warning" });
+                    this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
                     return;
                 }
                 window.location.href = `/etc/${this.searchType}/${link}`;
@@ -126,5 +125,13 @@
         font-size: 18px;
         color: black;
         font-weight: bold;
+    }
+    .bg-color {
+        background-color: #E0E9F0;
+    }
+    .header-color {
+        background-color: #71838F;
+        color: #ffffff !important;
+        font-weight: bold !important;
     }
 </style>

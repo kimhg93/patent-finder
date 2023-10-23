@@ -12,7 +12,7 @@
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="loadItems">
+                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
@@ -23,7 +23,7 @@
                         <td class="grid-td">{{ item.regNo }}</td>
                         <td class="grid-td">{{ item.regDate }}</td>
                         <td class="grid-td">
-                            <v-btn class="btn-status" @click="showStatus(item.appNo)">현재상태보기<br></v-btn>
+                            <v-btn class="btn-status" @click="this.$showStatus(item.appNo)">현재상태보기<br></v-btn>
                         </td>
                         <td class="grid-td">{{ item.estPrice }}</td>
                         <td class="grid-td">{{ item.contactNum }}</td>
@@ -62,12 +62,6 @@
             };
         },
         methods: {
-            loadItems({page, itemsPerPage, sortBy}) {
-                this.currentPage = page;
-                this.itemsPerPage = itemsPerPage;
-                console.log(sortBy);
-                this.fetchData();
-            } ,
             async fetchData() {
                 this.loading = true;
                 try {
@@ -84,19 +78,13 @@
 
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
+                    if(isNaN(this.totalCount)) this.totalCount = 0;
                 } catch (e) {
                     console.error(e);
                 } finally {
                     this.loading = false;
                 }
             },
-            showStatus(appNo) {
-                let options = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=1000, height=1000, top=0,left=0";
-                window.open(`http://kibc24.com/search/search.php?mode=realtime&linkNumber=${appNo}`, "_blank", options);
-            },
-        },
-        created() {
-            this.fetchData();
         },
     };
 </script>
@@ -130,6 +118,7 @@
     }
     .btn-status {
         height: 30px;
+
     }
     .btn-status > :deep(.v-btn__content) {
         font-size: 12px;

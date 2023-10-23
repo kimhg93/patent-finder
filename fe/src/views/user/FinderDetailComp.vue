@@ -12,7 +12,7 @@ UserSearch.vue<template>
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="loadItems">
+                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
@@ -25,7 +25,7 @@ UserSearch.vue<template>
                         <td class="grid-td" :title="item.conDate">{{ item.conDate }}</td>
                         <td class="grid-td text-left" :title="item.invTitle">{{ item.invTitle }}</td>
                         <td class="grid-td">
-                            <v-btn class="btn-status" @click="showStatus(item.appNo)">현재상태보기<br></v-btn>
+                            <v-btn class="btn-status" @click="this.$showStatus(item.appNo)">현재상태보기<br></v-btn>
                         </td>
                     </tr>
                 </template>
@@ -37,7 +37,6 @@ UserSearch.vue<template>
 
 <script>
     import axios from "axios";
-    import emitter from '@/components/event-bus';
 
     export default {
         name: "SellerSearch",
@@ -70,11 +69,11 @@ UserSearch.vue<template>
             async fetchData() {
                 this.loading = true;
                 try {
-                    const url = `/api/finder/comp/${this.searchType}`;
+                    const url = `/api/comp/${this.searchType}`;
 
                     const response = await axios.get(url, {
                         params: {
-                            ipc: this.ipc,
+                            ipc: this.ipc.replace("-", "/"),
                             page: this.currentPage,
                             size: this.itemsPerPage,
                         },
@@ -82,38 +81,13 @@ UserSearch.vue<template>
 
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
+                    if(isNaN(this.totalCount)) this.totalCount = 0;
                 } catch (e) {
                     console.error(e);
                 } finally {
                     this.loading = false;
                 }
             },
-
-            loadItems({page, itemsPerPage, sortBy}) {
-                this.currentPage = page;
-                this.itemsPerPage = itemsPerPage;
-                console.log(sortBy);
-                this.fetchData();
-            },
-            showStatus(appNo) {
-                let options = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=1000, height=1000, top=0,left=0";
-                window.open(`http://kibc24.com/search/search.php?mode=realtime&linkNumber=${appNo}`, "_blank", options);
-            },
-            searchClick() {
-                if(this.id == "" || this.password == ""){
-                    emitter.emit('show-alert', { message: "아이디 또는 비밀번호를 확인하세요.", type: "warning" });
-                    return;
-                }
-                if(this.searchType == "") {
-                    emitter.emit('show-alert', { message: "검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", type: "warning" });
-                    return;
-                }
-                this.fetchData();
-            },
-
-        },
-        created() {
-            this.fetchData();
         },
     };
 </script>

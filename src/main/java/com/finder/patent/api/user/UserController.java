@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,15 +27,13 @@ public class UserController {
         param.put("from", (page-1) * size);
         param.put("size", size);
 
-        List<Map<String, Object>> list = new ArrayList<>();
-
         result.put("totalCount", userService.selectFinderDataCount(param));
         result.put("list", userService.selectFinderData(param));
 
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping(value = "/finder/univ/{searchType}")
+    @GetMapping(value = "/univ/{searchType}")
     public ResponseEntity<Map<String, Object>> selectFinderDataUniv(@PathVariable String searchType,
                                                                     String ipc, int page, int size){
         Map<String, Object> param = new HashMap<>();
@@ -53,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping(value = "/finder/comp/{searchType}")
+    @GetMapping(value = "/comp/{searchType}")
     public ResponseEntity<Map<String, Object>> selectFinderDataComp(@PathVariable String searchType,
                                                                     String ipc, int page, int size){
         Map<String, Object> param = new HashMap<>();
@@ -79,8 +75,6 @@ public class UserController {
         param.put("searchType", searchType);
         param.put("from", (page-1) * size);
         param.put("size", size);
-
-        List<Map<String, Object>> list = new ArrayList<>();
 
         result.put("totalCount", userService.selectSellerDataCount(param));
         result.put("list", userService.selectSellerData(param));
