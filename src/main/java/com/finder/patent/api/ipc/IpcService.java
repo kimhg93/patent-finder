@@ -18,22 +18,11 @@ public class IpcService {
 
     public List<Map<String, Object>> selectPatentListByNumber(Map<String, Object> param) {
         String searchType = param.get("searchType").toString();
-
-        if("detail".equalsIgnoreCase(searchType)){
-            return ipcDao.selectPatentListByNumberDetail(param);
-        } else {
-            return ipcDao.selectPatentListByNumberRange(param);
-        }
-
+        return SearchType.fromString(searchType).fetchData(param, ipcDao);
     }
 
     public Integer selectParentListByNumberCount(Map<String, Object> param) {
         String searchType = param.get("searchType").toString();
-
-        if("detail".equalsIgnoreCase(searchType)){
-            return ipcDao.selectParentListByNumberDetailCount(param);
-        } else {
-            return ipcDao.selectPatentListByNumberRangeCount(param);
-        }
+        return SearchType.fromString(searchType).fetchCount(param, ipcDao);
     }
 }

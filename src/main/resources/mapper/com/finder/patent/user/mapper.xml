@@ -6,7 +6,7 @@
     <!-- 중소기업 : 본인 List 보여주기 - 상세 IPC -->
     <select id="selectFinderDataDetail" resultType="com.finder.patent.config.CamelMap">
         <![CDATA[
-        <!-- com.finder.patent.ipc.mapper.selectFinderDataDetail  -->
+        /* com.finder.patent.ipc.mapper.selectFinderDataDetail */
         SELECT RegNo               AS REG_NO
              , RegDate             AS REG_DATE
              , AppNo               AS APP_NO
@@ -28,7 +28,7 @@
     <!-- 중소기업 : 본인 List 보여주기 - 광범위 IPC -->
     <select id="selectFinderDataRange" resultType="com.finder.patent.config.CamelMap">
         <![CDATA[
-        <!-- com.finder.patent.ipc.mapper.selectFinderDataRange  -->
+        /* com.finder.patent.ipc.mapper.selectFinderDataRange */
         SELECT RegNo            AS REG_NO
              , RegDate          AS REG_DATE
              , AppNo            AS APP_NO
@@ -49,7 +49,7 @@
 
     <select id="selectFinderDataDetailCount" resultType="Integer">
         <![CDATA[
-        <!-- com.finder.patent.ipc.mapper.selectFinderDataDetailCount  -->
+        /* com.finder.patent.ipc.mapper.selectFinderDataDetailCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.PatentList
          WHERE OrgIDNo IN (SELECT OrgIDNo
@@ -61,7 +61,7 @@
 
     <select id="selectFinderDataRangeCount" resultType="Integer">
         <![CDATA[
-        <!-- com.finder.patent.ipc.mapper.selectFinderDataRangeCount  -->
+        /* com.finder.patent.ipc.mapper.selectFinderDataRangeCount */
         SELECT COUNT(*) AS TOTAL_COUNT
           FROM PATENT.PatentList
          WHERE OrgIDNo IN (SELECT OrgIDNo

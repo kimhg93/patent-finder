@@ -6,7 +6,9 @@
                     <v-container>
                         <v-row justify="space-between">
                             <v-col v-for="(group, techGroupNo, index) in groupedData" :key="techGroupNo" cols="4">
-                                <v-card :class="index < 3 ? 'parent-first-row' : 'parent-second-row'" class="parent-card mb-5" width="400">
+                                <v-card :class="[{ 'even-card': index % 2 === 0, 'odd-card': index % 2 !== 0 }
+                                                , index < 3 ? 'parent-first-row' : 'parent-second-row']"
+                                        class="parent-card mb-5" width="400">
                                     <v-card-title class="parent-title">{{ group[0].techGroupNo }}. {{group[0].techGroupNm}} ({{group.length}})</v-card-title>
                                     <v-row justify="space-between" class="child-row pa-4">
                                         <v-col v-for="item in group" :key="item.techFieldNo" cols="6" class="child-col">
@@ -82,13 +84,16 @@
     .parent-title {
         font-size: 20px;
         margin-bottom: 1rem;
+        color: #ffffff;
+        font-weight: bold;
     }
     .parent-card {
         margin-bottom: 3rem;
         height: 100%;
     }
     .child-card {
-        margin-bottom: 1rem
+        margin-bottom: 1rem;
+        background-color: #F2F2F2;
     }
 
     .child-col {
@@ -102,11 +107,15 @@
         vertical-align: middle;
     }
     .parent-first-row {
-        height: 330px;
+        height: 338px;
     }
-
     .parent-second-row {
-        height: 515px;
+        height: 520px;
     }
-
+    .even-card {
+        background-color: #b2bec5; /* 원하는 색상 코드로 교체 */
+    }
+    .odd-card {
+        background-color: #71838F; /* 원하는 색상 코드로 교체 */
+    }
 </style>

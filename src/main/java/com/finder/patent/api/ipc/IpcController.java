@@ -31,10 +31,6 @@ public class IpcController {
         param.put("from", (page-1) * size);
         param.put("size", size);
 
-        List<Map<String, Object>> list = ipcService.selectPatentListByNumber(param);
-
-        result.put("list", list);
-
         result.put("totalCount", ipcService.selectParentListByNumberCount(param));
         result.put("list", ipcService.selectPatentListByNumber(param));
 

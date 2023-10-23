@@ -32,7 +32,6 @@
                 { title: '기술분류 검색', path: '/tech' },
                 { title: '기타 기술분류 검색', path: '/tech/etc' },
                 { title: '출원번호 검색', path: '/number' },
-                // Add more navigation items as needed
             ],
         }),
         methods: {
