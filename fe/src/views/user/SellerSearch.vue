@@ -44,7 +44,7 @@ UserSearch.vue<template>
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
+                    @update:options="loadItems">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
@@ -133,6 +133,11 @@ UserSearch.vue<template>
                     this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
                     return;
                 }
+                this.fetchData();
+            },
+            loadItems({page, itemsPerPage}) {
+                this.currentPage = page;
+                this.itemsPerPage = itemsPerPage;
                 this.fetchData();
             },
         },

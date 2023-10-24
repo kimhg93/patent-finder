@@ -30,13 +30,13 @@ UserSearch.vue<template>
                         <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
                             <v-radio color="primary" value="detail" class="radio">
                                 <template v-slot:label>
-                                    <span class="radio-label">그룹으로 보기(상세 검색 가능)</span>
+                                    <span class="radio-label">클래스+그룹으로보기 (예: H04B 2/00)</span>
                                 </template>
                             </v-radio>
 
                             <v-radio color="success" value="range" class="radio">
                                 <template v-slot:label>
-                                    <span class="radio-label">클래스로 보기(광범위 검색)</span>
+                                    <span class="radio-label">클래스로 보기 (예: H04B)</span>
                                 </template>
                             </v-radio>
                         </v-radio-group>
@@ -59,7 +59,7 @@ UserSearch.vue<template>
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
+                    @update:options="loadItems">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
@@ -67,7 +67,7 @@ UserSearch.vue<template>
                         <td class="grid-td text-center">{{ item.regDate }}</td>
                         <td class="grid-td text-center">{{ item.appNo }}</td>
                         <td class="grid-td text-center">{{ item.appDate }}</td>
-                        <td class="grid-td text-center">{{ item.appNm }}</td>
+                        <td class="grid-td text-center" :title="item.appNm">{{ item.appNm }}</td>
                         <td class="grid-td text-center" :title="item.conDate">{{ item.conDate }}</td>
                         <td class="grid-td text-left" :title="item.invTitle">{{ item.invTitle }}</td>
                         <td class="grid-td text-center">
@@ -111,7 +111,7 @@ UserSearch.vue<template>
                     { width:"100",title: '출원번호', align: 'center', key: 'appNo' },
                     { width:"80",title: '출원일자', align: 'center', key: 'appDate' },
                     { width:"120",title: '권리자', align: 'center', key: 'appNm' },
-                    { width:"70",title: '존속일', align: 'center', key: 'conDate' },
+                    { width:"100",title: '존속일', align: 'center', key: 'conDate' },
                     { width:"200",title: '발명의 명칭', align: 'center', key: 'invTitle' },
                     { width:"90",title: '현재상태', align: 'center', key: 'status' },
                     { width:"50",title: 'IPC', align: 'center', key: 'ipc' },
@@ -164,6 +164,12 @@ UserSearch.vue<template>
                 this.fetchData();
             },
 
+            loadItems({page, itemsPerPage}) {
+                this.currentPage = page;
+                this.itemsPerPage = itemsPerPage;
+                this.fetchData();
+            },
+
         },
     };
 </script>
@@ -210,5 +216,8 @@ UserSearch.vue<template>
         background-color: #71838F;
         color: #ffffff;
         font-weight: bold;
+    }
+    .radio-label {
+        letter-spacing: -.7px;
     }
 </style>

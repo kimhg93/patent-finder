@@ -12,14 +12,14 @@
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
+                    @update:options="loadItems">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
                         <td class="grid-td">{{ item.appNo }}</td>
                         <td class="grid-td">{{ item.appDate }}</td>
                         <td class="grid-td text-left" :title="item.invTitle">{{ item.invTitle }}</td>
-                        <td class="grid-td text-left" :title="item.invNm">{{ item.invNm }}</td>
+                        <td class="grid-td text-left" :title="item.appNm">{{ item.appNm }}</td>
                         <td class="grid-td">{{ item.regNo }}</td>
                         <td class="grid-td">{{ item.regDate }}</td>
                         <td class="grid-td">
@@ -48,14 +48,14 @@
                 currentPage: 1,
                 totalCount: 0,
                 headers: [
-                    { width:"90",title: '출원번호', align: 'center', sortable: false, key: 'appNo' },
-                    { width:"70",title: '출원일자', align: 'center', key: 'appDate' },
-                    { width:"220",title: '발명의명칭', align: 'center', key: 'invTitle' },
-                    { width:"210",title: '출원인', align: 'center', key: 'invNm' },
-                    { width:"90",title: '등록번호', align: 'center', key: 'regNo' },
-                    { width:"70",title: '등록일자', align: 'center', key: 'regDate' },
+                    { width:"100",title: '출원번호', align: 'center', sortable: false, key: 'appNo' },
+                    { width:"80",title: '출원일자', align: 'center', key: 'appDate' },
+                    { width:"230",title: '발명의명칭', align: 'center', key: 'invTitle' },
+                    { width:"150",title: '출원인', align: 'center', key: 'appNm' },
+                    { width:"100",title: '등록번호', align: 'center', key: 'regNo' },
+                    { width:"80",title: '등록일자', align: 'center', key: 'regDate' },
                     { width:"80",title: '현재상태', align: 'center', key: 'compCode' },
-                    { width:"70",title: '예상가격', align: 'center', key: 'estPrice' },
+                    { width:"80",title: '예상가격', align: 'center', key: 'estPrice' },
                     { width:"70",title: '연락처', align: 'center', key: 'contactNum' },
                 ],
                 list: [],
@@ -84,6 +84,11 @@
                 } finally {
                     this.loading = false;
                 }
+            },
+            loadItems({page, itemsPerPage}) {
+                this.currentPage = page;
+                this.itemsPerPage = itemsPerPage;
+                this.fetchData();
             },
         },
     };

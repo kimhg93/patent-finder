@@ -12,7 +12,7 @@ UserSearch.vue<template>
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
+                    @update:options="loadItems">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
@@ -87,6 +87,12 @@ UserSearch.vue<template>
                 } finally {
                     this.loading = false;
                 }
+            },
+
+            loadItems({page, itemsPerPage}) {
+                this.currentPage = page;
+                this.itemsPerPage = itemsPerPage;
+                this.fetchData();
             },
         },
     };
