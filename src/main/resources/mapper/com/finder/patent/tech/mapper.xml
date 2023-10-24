@@ -63,7 +63,7 @@
              , E.AppNo          AS APP_NO
              , E.AppDate        AS APP_DATE
              , E.InvTitle       AS INV_TITLE
-             , E.InvNm          AS INV_NM
+             , E.appNm          AS APP_NM
              , E.RegNo          AS REG_NO
              , E.RegDate        AS REG_DATE
              , E.EstPrice       AS EST_PRICE
@@ -102,7 +102,7 @@
              , E.AppNo          AS APP_NO
              , E.AppDate        AS APP_DATE
              , E.InvTitle       AS INV_TITLE
-             , E.InvNm          AS INV_NM
+             , E.appNm          AS APP_NM
              , E.RegNo          AS REG_NO
              , E.RegDate        AS REG_DATE
              , E.EstPrice       AS EST_PRICE
@@ -140,7 +140,7 @@
              , E.AppNo          AS APP_NO
              , E.AppDate        AS APP_DATE
              , E.InvTitle       AS INV_TITLE
-             , E.InvNm          AS INV_NM
+             , E.appNm          AS APP_NM
              , E.RegNo          AS REG_NO
              , E.RegDate        AS REG_DATE
              , E.EstPrice       AS EST_PRICE
@@ -179,7 +179,7 @@
              , E.AppNo          AS APP_NO
              , E.AppDate        AS APP_DATE
              , E.InvTitle       AS INV_TITLE
-             , E.InvNm          AS INV_NM
+             , E.appNm          AS APP_NM
              , E.RegNo          AS REG_NO
              , E.RegDate        AS REG_DATE
              , E.EstPrice       AS EST_PRICE

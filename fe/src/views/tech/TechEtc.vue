@@ -4,13 +4,13 @@
             <v-radio-group inline v-model="searchType">
                 <v-radio color="primary" value="detail" class="radio">
                     <template v-slot:label>
-                        <span class="radio-label">그룹으로 보기(상세 검색 가능)</span>
+                        <span class="radio-label">클래스+그룹으로보기 (예: H04B 2/00)</span>
                     </template>
                 </v-radio>
 
                 <v-radio color="success" value="range" class="radio">
                     <template v-slot:label>
-                        <span class="radio-label">클래스로 보기(광범위 검색)</span>
+                        <span class="radio-label">클래스로 보기 (예: H04B)</span>
                     </template>
                 </v-radio>
             </v-radio-group>
@@ -133,5 +133,8 @@
         background-color: #71838F;
         color: #ffffff !important;
         font-weight: bold !important;
+    }
+    .radio-label {
+        letter-spacing: -.7px;
     }
 </style>

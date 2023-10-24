@@ -19,12 +19,12 @@
                         <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
                             <v-radio color="primary" value="detail" class="radio">
                                 <template v-slot:label>
-                                    <span class="radio-label">그룹으로 보기(상세 검색 가능)</span>
+                                    <span class="radio-label">클래스+그룹으로보기 (예: H04B 2/00)</span>
                                 </template>
                             </v-radio>
                             <v-radio color="success" value="range" class="radio">
                                 <template v-slot:label>
-                                    <span class="radio-label">클래스로 보기(광범위 검색)</span>
+                                    <span class="radio-label">클래스로 보기 (예: H04B)</span>
                                 </template>
                             </v-radio>
                         </v-radio-group>
@@ -47,14 +47,14 @@
                     :height="700"
                     :row-height="100"
                     item-key="title"
-                    @update:options="this.$loadItems(this.currentPage, this.itemsPerPage, this.fetchData)">
+                    @update:options="loadItems">
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
                         <td class="grid-td">{{ item.appNo }}</td>
                         <td class="grid-td">{{ item.appDate }}</td>
                         <td class="grid-td text-left" :title="item.invTitle">{{ item.invTitle }}</td>
-                        <td class="grid-td text-left" :title="item.invNm">{{ item.invNm }}</td>
+                        <td class="grid-td text-left" :title="item.appNm">{{ item.appNm }}</td>
                         <td class="grid-td">{{ item.regNo }}</td>
                         <td class="grid-td">{{ item.regDate }}</td>
                         <td class="grid-td">
@@ -90,7 +90,7 @@
                     { width:"90",title: '출원번호', align: 'center', sortable: false, key: 'appNo' },
                     { width:"70",title: '출원일자', align: 'center', key: 'appDate' },
                     { width:"220",title: '발명의명칭', align: 'center', key: 'invTitle' },
-                    { width:"210",title: '출원인', align: 'center', key: 'invNm' },
+                    { width:"210",title: '출원인', align: 'center', key: 'appNm' },
                     { width:"90",title: '등록번호', align: 'center', key: 'regNo' },
                     { width:"70",title: '등록일자', align: 'center', key: 'regDate' },
                     { width:"80",title: '현재상태', align: 'center', key: 'compCode' },
@@ -128,6 +128,12 @@
                     this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
                     return;
                 }
+                this.fetchData();
+            },
+
+            loadItems({page, itemsPerPage}) {
+                this.currentPage = page;
+                this.itemsPerPage = itemsPerPage;
                 this.fetchData();
             },
 
@@ -177,5 +183,8 @@
         background-color: #71838F;
         color: #ffffff;
         font-weight: bold;
+    }
+    .radio-label {
+        letter-spacing: -.7px;
     }
 </style>
