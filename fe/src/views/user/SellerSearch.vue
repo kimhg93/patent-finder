@@ -90,7 +90,6 @@ UserSearch.vue<template>
                     { width:"100",title: '출원번호', align: 'center', key: 'appNo' },
                     { width:"80",title: '출원일자', align: 'center', key: 'appDate' },
                     { width:"120",title: '권리자', align: 'center', key: 'appNm' },
-                    { width:"70",title: '존속일', align: 'center', key: 'conDate' },
                     { width:"200",title: '발명의 명칭', align: 'center', key: 'invTitle' },
                     { width:"90",title: '현재상태', align: 'center', key: 'status' },
                     { width:"80",title: '예상가격', align: 'center', key: 'estPrice' },
