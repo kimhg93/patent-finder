@@ -10,4 +10,4 @@ ENV JASYPT_ENCRYPTOR_PASSWORD=""
 
 ENTRYPOINT exec java -Djasypt.encryptor.password=${JASYPT_ENCRYPTOR_PASSWORD} -jar /app.jar
 
-#nohup docker run -e JASYPT_ENCRYPTOR_PASSWORD="" -p 80:80 patent-finder &
+#nohup docker run -e JASYPT_ENCRYPTOR_PASSWORD=patent-finder-encrypt -p 80:80 patent-finder &

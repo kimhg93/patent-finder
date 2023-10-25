@@ -6,6 +6,7 @@ import TechEtc from '@/views/tech/TechEtc.vue'
 import AppNumberSearch from '@/views/ipc/AppNumberSearch.vue'
 import FinderSearch from '@/views/user/FinderSearch.vue'
 import SellerSearch from '@/views/user/SellerSearch.vue'
+import nameSearch from '@/views/user/nameSearch.vue'
 import FinderDetailUniv from '@/views/user/FinderDetailUniv.vue'
 import FinderDetailComp from '@/views/user/FinderDetailComp.vue'
 
@@ -19,6 +20,7 @@ const routes = [
     { path: '/number', name: 'AppNumberSearch', component: AppNumberSearch, props: true }, // 출원번호검색
     { path: '/finder', name: 'FinderSearch', component: FinderSearch, props: true }, // 대학/연구소
     { path: '/seller', name: 'SellerSearch', component: SellerSearch, props: true }, // 중소기업
+    { path: '/name', name: 'nameSearch', component: nameSearch, props: true }, // 출원인
     { path: '/univ/:searchType/:ipc', name: 'FinderDetailUniv', component: FinderDetailUniv, props: true }, // 중소기업 > 대학/연구소
     { path: '/comp/:searchType/:ipc', name: 'FinderDetailComp', component: FinderDetailComp, props: true }, // 중소기업 > 경쟁업체
 ]

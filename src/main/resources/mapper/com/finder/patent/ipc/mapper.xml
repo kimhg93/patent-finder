@@ -3,6 +3,36 @@
 
 <mapper namespace="com.finder.patent.ipc.mapper">
 
+    <!-- 출원번호   -->
+    <select id="selectPatentListByNumber" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectPatentListByNumber */
+        SELECT IPC12
+             , AppNo        AS APP_NO
+             , AppDate      AS APP_DATE
+             , InvTitle     AS INV_TITLE
+             , AppNm        AS APP_NM
+             , RegNo        AS REG_NO
+             , RegDate      AS REG_DATE
+             , EstPrice     AS EST_PRICE
+             , ContactNum   AS CONTACT_NUM
+          FROM PATENT.PatentList
+         WHERE AppNo = #{appNumber }
+         ORDER BY AppNo
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
+    <select id="selectPatentListByNumberCount" resultType="Integer">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectPatentListByNumberCount */
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList
+         WHERE AppNo = #{appNumber };
+        ]]>
+    </select>
+
+
     <!-- 출원번호 상세 IPC   -->
     <select id="selectPatentListByNumberDetail" resultType="com.finder.patent.config.CamelMap">
         <![CDATA[
@@ -11,7 +41,7 @@
              , AppNo        AS APP_NO
              , AppDate      AS APP_DATE
              , InvTitle     AS INV_TITLE
-             , AppNm        AS INV_NM
+             , AppNm        AS APP_NM
              , RegNo        AS REG_NO
              , RegDate      AS REG_DATE
              , EstPrice     AS EST_PRICE
@@ -33,7 +63,7 @@
              , AppNo        AS APP_NO
 	         , AppDate      AS APP_DATE
              , InvTitle     AS INV_TITLE
-             , AppNm        AS INV_NM
+             , AppNm        AS APP_NM
              , RegNo        AS REG_NO
              , RegDate      AS REG_DATE
              , EstPrice     AS EST_PRICE

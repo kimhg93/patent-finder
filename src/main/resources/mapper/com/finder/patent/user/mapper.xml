@@ -15,6 +15,7 @@
              , '현재상태 참조'      AS CON_DATE
              , InvTitle            AS INV_TITLE
              , IPC12               AS IPC
+             , IPC1                AS IPC1
           FROM PATENT.PatentList
          WHERE OrgIDNo IN (SELECT OrgIDNo
                              FROM PATENT.OrgID
@@ -37,6 +38,7 @@
              , '현재상태 참조'    AS CON_DATE
              , InvTitle         AS INV_TITLE
              , IPC1             AS IPC
+             , IPC12             AS IPC1
           FROM PATENT.PatentList
          WHERE OrgIDNo IN (SELECT OrgIDNo
                              FROM PATENT.OrgID
@@ -188,6 +190,26 @@
         ]]>
     </select>
 
+    <!-- 중소기업 : 본인 List 보여주기 - 상세 IPC -->
+    <select id="selectNameData" resultType="com.finder.patent.config.CamelMap">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectNameData */
+        SELECT RegNo               AS REG_NO
+             , RegDate             AS REG_DATE
+             , AppNo               AS APP_NO
+             , AppDate             AS APP_DATE
+             , AppNm               AS APP_NM
+             , '현재상태 참조'      AS CON_DATE
+             , InvTitle            AS INV_TITLE
+             , IPC12               AS IPC
+             , IPC1                AS IPC1
+          FROM PATENT.PatentList
+         WHERE AppNm LIKE CONCAT('%', #{appNm }, '%')
+         ORDER BY AppNo
+         LIMIT #{from }, #{size }
+        ]]>
+    </select>
+
     <select id="selectFinderDataCompDetailCount" resultType="Integer">
         <![CDATA[
         /* com.finder.patent.ipc.mapper.selectFinderDataCompDetailCount */
@@ -247,6 +269,15 @@
                              FROM PATENT.OrgID
                             WHERE OrgID = #{id }
                               AND OrgPwd = #{password })
+        ]]>
+    </select>
+
+    <select id="selectNameDataCount" resultType="Integer">
+        <![CDATA[
+        /* com.finder.patent.ipc.mapper.selectNameDataCount */
+        SELECT COUNT(*) AS TOTAL_COUNT
+          FROM PATENT.PatentList
+         WHERE AppNm LIKE CONCAT('%', #{appNm }, '%')
         ]]>
     </select>
 

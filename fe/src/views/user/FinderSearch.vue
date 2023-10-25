@@ -26,15 +26,15 @@ UserSearch.vue<template>
                                 v-model="password">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="4" lg="4">
+                    <v-col cols="12" md="4" lg="4" v-if="radioDisplay">
                         <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
-                            <v-radio color="primary" value="detail" class="radio">
+                            <v-radio color="primary" value="detail" class="radio" @click="radioChange('detail')">
                                 <template v-slot:label>
                                     <span class="radio-label">클래스+그룹으로보기 (예: H04B 2/00)</span>
                                 </template>
                             </v-radio>
 
-                            <v-radio color="success" value="range" class="radio">
+                            <v-radio color="success" value="range" class="radio" @click="radioChange('range')">
                                 <template v-slot:label>
                                     <span class="radio-label">클래스로 보기 (예: H04B)</span>
                                 </template>
@@ -68,17 +68,16 @@ UserSearch.vue<template>
                         <td class="grid-td text-center">{{ item.appNo }}</td>
                         <td class="grid-td text-center">{{ item.appDate }}</td>
                         <td class="grid-td text-center" :title="item.appNm">{{ item.appNm }}</td>
-                        <td class="grid-td text-center" :title="item.conDate">{{ item.conDate }}</td>
                         <td class="grid-td text-left" :title="item.invTitle">{{ item.invTitle }}</td>
                         <td class="grid-td text-center">
                             <v-btn class="btn-status" @click="this.$showStatus(item.appNo)">현재상태보기<br></v-btn>
                         </td>
                         <td class="grid-td text-center">{{ item.ipc }}</td>
                         <td class="grid-td text-center">
-                            <v-btn class="btn-status" @click="showDetail(item.ipc, 2)">선택<br></v-btn>
+                            <v-btn class="btn-status" @click="showDetail(item.ipc, item.ipc1, 2)">선택<br></v-btn>
                         </td>
                         <td class="grid-td">
-                            <v-btn class="btn-status" @click="showDetail(item.ipc, 3)">선택<br></v-btn>
+                            <v-btn class="btn-status" @click="showDetail(item.ipc, item.ipc1, 3)">선택<br></v-btn>
                         </td>
                     </tr>
                 </template>
@@ -105,13 +104,14 @@ UserSearch.vue<template>
                 searchType: "",
                 id: "",
                 password: "",
+                radioDisplay: false,
+                lastSelected: null,
                 headers: [
                     { width:"100",title: '등록번호', align: 'center', sortable: false, key: 'regNo' },
                     { width:"80",title: '등록일자', align: 'center', key: 'regDate' },
                     { width:"100",title: '출원번호', align: 'center', key: 'appNo' },
                     { width:"80",title: '출원일자', align: 'center', key: 'appDate' },
                     { width:"120",title: '권리자', align: 'center', key: 'appNm' },
-                    { width:"100",title: '존속일', align: 'center', key: 'conDate' },
                     { width:"200",title: '발명의 명칭', align: 'center', key: 'invTitle' },
                     { width:"90",title: '현재상태', align: 'center', key: 'status' },
                     { width:"50",title: 'IPC', align: 'center', key: 'ipc' },
@@ -139,7 +139,9 @@ UserSearch.vue<template>
 
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
+
                     if(isNaN(this.totalCount)) this.totalCount = 0;
+                    if(this.totalCount > 0) this.radioDisplay = true;
                 } catch (e) {
                     console.error(e);
                 } finally {
@@ -147,20 +149,39 @@ UserSearch.vue<template>
                 }
             },
 
-            showDetail(ipc, buttonType){
+            showDetail(ipc, ipc1, buttonType){
                 const convertIpc = ipc.replace("/", "-");
-                if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc}`;
-                else  location.href = `/comp/${this.searchType}/${convertIpc}`;
+                const convertIpc1 = ipc1.replace("/", "-");
+
+                if(this.searchType == "" || this.searchType == null) {
+                    this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
+                    return;
+                }
+
+                if(this.searchType == "detail"){
+                    if(convertIpc.indexOf("-") > -1) { // 광범위 > detail
+                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc}`;
+                        else location.href = `/comp/${this.searchType}/${convertIpc}`;
+                    } else {
+                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc1}`;
+                        else location.href = `/comp/${this.searchType}/${convertIpc1}`;
+                    }
+                } else {
+                    if(convertIpc.indexOf("-") > -1){ // 광범위 > detail
+                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc1}`;
+                        else location.href = `/comp/${this.searchType}/${convertIpc1}`;
+                    } else {
+                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc}`;
+                        else location.href = `/comp/${this.searchType}/${convertIpc}`;
+                    }
+                }
             },
             searchClick() {
                 if(this.id == "" || this.password == ""){
                     this.$showAlert("아이디 또는 비밀번호를 확인하세요.", "warning");
                     return;
                 }
-                if(this.searchType == "") {
-                    this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
-                    return;
-                }
+
                 this.fetchData();
             },
 
@@ -170,6 +191,13 @@ UserSearch.vue<template>
                 this.fetchData();
             },
 
+            radioChange(value) {
+                if (this.searchType === value) {
+                    this.$nextTick(() => {
+                        this.searchType = null;
+                    });
+                }
+            }
         },
     };
 </script>
@@ -219,5 +247,8 @@ UserSearch.vue<template>
     }
     .radio-label {
         letter-spacing: -.7px;
+    }
+    .col-radio{
+        display: none;
     }
 </style>

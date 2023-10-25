@@ -74,4 +74,13 @@ public class UserDao {
     public Integer selectSellerDataCount(Map<String, Object> param) {
         return sqlSession.selectOne(namespace + ".selectSellerDataCount", param);
     }
+
+    public List<Map<String, Object>> selectNameData(Map<String, Object> param) {
+        return sqlSession.selectList(namespace + ".selectNameData", param);
+    }
+
+    public Integer selectNameDataCount(Map<String, Object> param) {
+        return sqlSession.selectOne(namespace + ".selectNameDataCount", param);
+    }
+
 }

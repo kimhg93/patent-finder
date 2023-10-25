@@ -39,4 +39,12 @@ public class UserService {
     public Integer selectSellerDataCount(Map<String, Object> param) {
         return userDao.selectSellerDataCount(param);
     }
+
+    public List<Map<String, Object>> selectNameData(Map<String, Object> param) {
+        return userDao.selectNameData(param);
+    }
+
+    public Integer selectNameDataCount(Map<String, Object> param) {
+        return userDao.selectNameDataCount(param);
+    }
 }

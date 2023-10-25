@@ -19,6 +19,14 @@ public class IpcDao {
         return sqlSession.selectOne(namespace + ".getFieldAndItem", number);
     }
 
+    public List<Map<String, Object>> selectPatentListByNumber(Map<String, Object> param) {
+        return sqlSession.selectList(namespace + ".selectPatentListByNumber", param);
+    }
+
+    public Integer selectPatentListByNumberCount(Map<String, Object> param) {
+        return sqlSession.selectOne(namespace + ".selectPatentListByNumberCount", param);
+    }
+
     public List<Map<String, Object>> selectPatentListByNumberDetail(Map<String, Object> param) {
         return sqlSession.selectList(namespace + ".selectPatentListByNumberDetail", param);
     }

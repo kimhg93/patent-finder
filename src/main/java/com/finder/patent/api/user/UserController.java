@@ -21,6 +21,9 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> selectFinderData(String id, String password, String searchType, int page, int size){
         Map<String, Object> param = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
+
+        if(searchType == null || "".equalsIgnoreCase(searchType)) searchType = "detail";
+
         param.put("id", id);
         param.put("password", password);
         param.put("searchType", searchType);
@@ -33,11 +36,29 @@ public class UserController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping(value = "/name/data")
+    public ResponseEntity<Map<String, Object>> selectNameData(String appNm, int page, int size){
+        Map<String, Object> param = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
+
+
+        param.put("appNm", appNm);
+        param.put("from", (page-1) * size);
+        param.put("size", size);
+
+        result.put("totalCount", userService.selectNameDataCount(param));
+        result.put("list", userService.selectNameData(param));
+
+        return ResponseEntity.ok().body(result);
+    }
+
+
     @GetMapping(value = "/univ/{searchType}")
     public ResponseEntity<Map<String, Object>> selectFinderDataUniv(@PathVariable String searchType,
                                                                     String ipc, int page, int size){
         Map<String, Object> param = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
+
         param.put("ipc", ipc);
         param.put("searchType", searchType);
         param.put("from", (page-1) * size);
