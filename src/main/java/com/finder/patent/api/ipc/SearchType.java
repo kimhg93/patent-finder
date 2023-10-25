@@ -4,6 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 public enum SearchType {
+    MAIN {
+        @Override
+        public List<Map<String, Object>> fetchData(Map<String, Object> param, IpcDao ipcDao) {
+            return ipcDao.selectPatentListByNumber(param);
+        }
+
+        @Override
+        public Integer fetchCount(Map<String, Object> param, IpcDao ipcDao) {
+            return ipcDao.selectPatentListByNumberCount(param);
+        }
+    },
     MAIN_DETAIL {
         @Override
         public List<Map<String, Object>> fetchData(Map<String, Object> param, IpcDao ipcDao) {
@@ -32,7 +43,8 @@ public enum SearchType {
     public abstract Integer fetchCount(Map<String, Object> param, IpcDao ipcDao);
 
     public static SearchType fromString(String searchType) {
-        if("detail".equalsIgnoreCase(searchType)) return MAIN_DETAIL;
+        if(searchType == null || "".equalsIgnoreCase(searchType)) return MAIN;
+        else if("detail".equalsIgnoreCase(searchType)) return MAIN_DETAIL;
         else return MAIN_RANGE;
     }
 }

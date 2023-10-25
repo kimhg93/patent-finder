@@ -15,14 +15,14 @@
                                 @click:append-inner="searchClick">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="4" lg="4">
+                    <v-col cols="12" md="4" lg="4" v-if="radioDisplay">
                         <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
-                            <v-radio color="primary" value="detail" class="radio">
+                            <v-radio color="primary" value="detail" class="radio" @click="radioChange('detail')">
                                 <template v-slot:label>
                                     <span class="radio-label">클래스+그룹으로보기 (예: H04B 2/00)</span>
                                 </template>
                             </v-radio>
-                            <v-radio color="success" value="range" class="radio">
+                            <v-radio color="success" value="range" class="radio" @click="radioChange('range')">
                                 <template v-slot:label>
                                     <span class="radio-label">클래스로 보기 (예: H04B)</span>
                                 </template>
@@ -86,6 +86,8 @@
                 techItemNo: 0,
                 searchType: "",
                 appNumber: "",
+                radioDisplay: false,
+                lastSelected: null,
                 headers: [
                     { width:"90",title: '출원번호', align: 'center', sortable: false, key: 'appNo' },
                     { width:"70",title: '출원일자', align: 'center', key: 'appDate' },
@@ -116,6 +118,7 @@
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
                     if(isNaN(this.totalCount)) this.totalCount = 0;
+                    if(this.totalCount > 0) this.radioDisplay = true;
                 } catch (e) {
                     console.error(e);
                 } finally {
@@ -124,10 +127,6 @@
             },
 
             searchClick() {
-                if(this.searchType == "") {
-                    this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
-                    return;
-                }
                 this.fetchData();
             },
 
@@ -136,6 +135,14 @@
                 this.itemsPerPage = itemsPerPage;
                 this.fetchData();
             },
+
+            radioChange(value) {
+                if (this.searchType === value) {
+                    this.$nextTick(() => {
+                        this.searchType = null;
+                    });
+                }
+            }
 
         },
     };

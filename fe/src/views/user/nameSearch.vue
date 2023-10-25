@@ -8,26 +8,29 @@ UserSearch.vue<template>
                                 :loading="loading"
                                 density="compact"
                                 variant="solo"
-                                label="ID"
+                                label="출원인"
                                 hide-details
-                                v-model="id"
+                                v-model="appNm"
                                 prepend-inner-icon="mdi-account">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="2" lg="2">
-                        <v-text-field
-                                :loading="loading"
-                                density="compact"
-                                variant="solo"
-                                label="Password"
-                                type="password"
-                                prepend-inner-icon="mdi-lock-outline"
-                                hide-details
-                                v-model="password">
-                        </v-text-field>
+                    <v-col cols="12" md="4" lg="4" v-if="radioDisplay">
+                        <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
+                            <v-radio color="primary" value="detail" class="radio" @click="radioChange('detail')">
+                                <template v-slot:label>
+                                    <span class="radio-label">클래스+그룹으로보기 (예: H04B 2/00)</span>
+                                </template>
+                            </v-radio>
+
+                            <v-radio color="success" value="range" class="radio" @click="radioChange('range')">
+                                <template v-slot:label>
+                                    <span class="radio-label">클래스로 보기 (예: H04B)</span>
+                                </template>
+                            </v-radio>
+                        </v-radio-group>
                     </v-col>
                     <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" >
-                        <v-btn @click="searchClick()" >검색</v-btn>
+                        <v-btn @click="searchClick()">검색</v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -48,18 +51,22 @@ UserSearch.vue<template>
 
                 <template v-slot:item="{ item }">
                     <tr class="grid-tr">
-                        <td class="grid-td">{{ item.regNo }}</td>
-                        <td class="grid-td">{{ item.regDate }}</td>
-                        <td class="grid-td">{{ item.appNo }}</td>
-                        <td class="grid-td">{{ item.appDate }}</td>
-                        <td class="grid-td">{{ item.appNm }}</td>
-                        <td class="grid-td"> <v-checkbox-btn class="tb-checkbox"></v-checkbox-btn></td>
+                        <td class="grid-td text-center">{{ item.regNo }}</td>
+                        <td class="grid-td text-center">{{ item.regDate }}</td>
+                        <td class="grid-td text-center">{{ item.appNo }}</td>
+                        <td class="grid-td text-center">{{ item.appDate }}</td>
+                        <td class="grid-td text-center" :title="item.appNm">{{ item.appNm }}</td>
                         <td class="grid-td text-left" :title="item.invTitle">{{ item.invTitle }}</td>
-                        <td class="grid-td">
+                        <td class="grid-td text-center">
                             <v-btn class="btn-status" @click="this.$showStatus(item.appNo)">현재상태보기<br></v-btn>
                         </td>
-                        <td class="grid-td"><input type="text" class="tb-input" placeholder="예상가격"></td>
-                        <td class="grid-td"><input type="text" class="tb-input" placeholder="연락처"></td>
+                        <td class="grid-td text-center">{{ item.ipc }}</td>
+                        <td class="grid-td text-center">
+                            <v-btn class="btn-status" @click="showDetail(item.ipc, item.ipc1,2)">선택<br></v-btn>
+                        </td>
+                        <td class="grid-td">
+                            <v-btn class="btn-status" @click="showDetail(item.ipc, item.ipc1,3)">선택<br></v-btn>
+                        </td>
                     </tr>
                 </template>
 
@@ -72,7 +79,7 @@ UserSearch.vue<template>
     import axios from "axios";
 
     export default {
-        name: "SellerSearch",
+        name: "FinderSearch",
         props: [],
         data() {
             return {
@@ -82,19 +89,22 @@ UserSearch.vue<template>
                 totalCount: 0,
                 techFieldNo: 0,
                 techItemNo: 0,
-                id: "",
+                searchType: "",
+                appNm: "",
                 password: "",
+                radioDisplay: false,
+                lastSelected: null,
                 headers: [
                     { width:"100",title: '등록번호', align: 'center', sortable: false, key: 'regNo' },
                     { width:"80",title: '등록일자', align: 'center', key: 'regDate' },
                     { width:"100",title: '출원번호', align: 'center', key: 'appNo' },
                     { width:"80",title: '출원일자', align: 'center', key: 'appDate' },
                     { width:"120",title: '권리자', align: 'center', key: 'appNm' },
-                    { width:"70",title: '존속일', align: 'center', key: 'conDate' },
                     { width:"200",title: '발명의 명칭', align: 'center', key: 'invTitle' },
                     { width:"90",title: '현재상태', align: 'center', key: 'status' },
-                    { width:"80",title: '예상가격', align: 'center', key: 'estPrice' },
-                    { width:"90",title: '연락처', align: 'center', key: 'contactNum' },
+                    { width:"50",title: 'IPC', align: 'center', key: 'ipc' },
+                    { width:"100",title: '대학/연구소', align: 'center', key: 'univ' },
+                    { width:"80",title: '경쟁업체', align: 'center', key: 'comp' },
                 ],
                 list: [],
             };
@@ -103,20 +113,25 @@ UserSearch.vue<template>
             async fetchData() {
                 this.loading = true;
                 try {
-                    const url = `/api/seller/data`;
+                    const url = `/api/name/data`;
+
+                    if(this.appNm == "" || this.appNm == null) return;
 
                     const response = await axios.get(url, {
                         params: {
-                            id: this.id,
-                            password: this.password,
+                            appNm: this.appNm,
+                            searchType: this.searchType,
                             page: this.currentPage,
                             size: this.itemsPerPage,
                         },
                     });
 
+
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
+
                     if(isNaN(this.totalCount)) this.totalCount = 0;
+                    if(this.totalCount > 0) this.radioDisplay = true;
                 } catch (e) {
                     console.error(e);
                 } finally {
@@ -124,22 +139,39 @@ UserSearch.vue<template>
                 }
             },
 
-            searchClick() {
-                if(this.id == "" || this.password == ""){
-                    this.$showAlert("아이디 또는 비밀번호를 확인하세요.", "warning");
-                    return;
-                }
-                if(this.searchType == "") {
+            showDetail(ipc, ipc1, buttonType){
+                const convertIpc = ipc.replace("/", "-");
+                const convertIpc1 = ipc1.replace("/", "-");
+
+                if(this.searchType == "" || this.searchType == null) {
                     this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
                     return;
                 }
+                if(this.searchType == "detail"){
+                    if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc}`;
+                    else location.href = `/comp/${this.searchType}/${convertIpc}`;
+                } else {
+                    if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc1}`;
+                    else location.href = `/comp/${this.searchType}/${convertIpc1}`;
+                }
+            },
+            searchClick() {
                 this.fetchData();
             },
+
             loadItems({page, itemsPerPage}) {
                 this.currentPage = page;
                 this.itemsPerPage = itemsPerPage;
                 this.fetchData();
             },
+
+            radioChange(value) {
+                if (this.searchType === value) {
+                    this.$nextTick(() => {
+                        this.searchType = null;
+                    });
+                }
+            }
         },
     };
 </script>
@@ -187,19 +219,10 @@ UserSearch.vue<template>
         color: #ffffff;
         font-weight: bold;
     }
-
-    .tb-input {
-        border: 1px solid #c5c5c5;
-        width: 95%;
-        margin: 0;
-        padding: 0;
-        height: 30px;
-        text-align: center;
-        font-size: 13px;
+    .radio-label {
+        letter-spacing: -.7px;
     }
-    .tb-checkbox{
-        height:30px;
-        width: 45px;
-        margin: auto;
+    .col-radio{
+        display: none;
     }
 </style>
