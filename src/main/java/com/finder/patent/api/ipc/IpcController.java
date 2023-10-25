@@ -26,7 +26,7 @@ public class IpcController {
         Map<String, Object> param = new HashMap<>();
 
         param.put("appNumber", appNumber);
-        param.put("searchType", searchType);
+        param.put("searchType", searchType == null ? "" : searchType);
         param.put("source", source);
         param.put("from", (page-1) * size);
         param.put("size", size);
