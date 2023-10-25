@@ -50,7 +50,7 @@ UserSearch.vue<template>
         <div class="grid-container">
             <v-data-table-server
                     class="elevation-1"
-                    :headers="headers"
+                    :headers="computedHeaders"
                     :items="list"
                     :page="currentPage"
                     :loading="loading"
@@ -73,10 +73,10 @@ UserSearch.vue<template>
                             <v-btn class="btn-status" @click="this.$showStatus(item.appNo)">현재상태보기<br></v-btn>
                         </td>
                         <td class="grid-td text-center">{{ item.ipc }}</td>
-                        <td class="grid-td text-center">
+                        <td class="grid-td text-center" v-if="displayColumn">
                             <v-btn class="btn-status" @click="showDetail(item.ipc, item.ipc1, 2)">선택<br></v-btn>
                         </td>
-                        <td class="grid-td">
+                        <td class="grid-td" v-if="displayColumn">
                             <v-btn class="btn-status" @click="showDetail(item.ipc, item.ipc1, 3)">선택<br></v-btn>
                         </td>
                     </tr>
@@ -106,7 +106,13 @@ UserSearch.vue<template>
                 password: "",
                 radioDisplay: false,
                 lastSelected: null,
-                headers: [
+                displayColumn: false,
+                list: [],
+            };
+        },
+        computed: {
+            computedHeaders() {
+                let baseHeaders = [
                     { width:"100",title: '등록번호', align: 'center', sortable: false, key: 'regNo' },
                     { width:"80",title: '등록일자', align: 'center', key: 'regDate' },
                     { width:"100",title: '출원번호', align: 'center', key: 'appNo' },
@@ -115,11 +121,17 @@ UserSearch.vue<template>
                     { width:"200",title: '발명의 명칭', align: 'center', key: 'invTitle' },
                     { width:"90",title: '현재상태', align: 'center', key: 'status' },
                     { width:"50",title: 'IPC', align: 'center', key: 'ipc' },
-                    { width:"100",title: '대학/연구소', align: 'center', key: 'univ' },
-                    { width:"80",title: '경쟁업체', align: 'center', key: 'comp' },
-                ],
-                list: [],
-            };
+                ];
+
+                if (this.displayColumn) {
+                    baseHeaders.push(
+                        { width:"100",title: '대학/연구소', align: 'center', key: 'univ' },
+                        { width:"80",title: '경쟁업체', align: 'center', key: 'comp' },
+                    );
+                }
+
+                return baseHeaders;
+            }
         },
         methods: {
             async fetchData() {
@@ -141,7 +153,10 @@ UserSearch.vue<template>
                     this.totalCount = response.data.totalCount;
 
                     if(isNaN(this.totalCount)) this.totalCount = 0;
-                    if(this.totalCount > 0) this.radioDisplay = true;
+                    if(this.totalCount > 0) {
+                        this.radioDisplay = true;
+                        if(this.searchType != "") this.displayColumn = true;
+                    }
                 } catch (e) {
                     console.error(e);
                 } finally {
