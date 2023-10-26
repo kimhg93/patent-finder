@@ -123,7 +123,7 @@ UserSearch.vue<template>
                     { width:"50",title: 'IPC', align: 'center', key: 'ipc' },
                 ];
 
-                if (this.displayColumn) {
+                if(this.displayColumn) {
                     baseHeaders.push(
                         { width:"100",title: '대학/연구소', align: 'center', key: 'univ' },
                         { width:"80",title: '경쟁업체', align: 'center', key: 'comp' },
@@ -153,10 +153,17 @@ UserSearch.vue<template>
                     this.totalCount = response.data.totalCount;
 
                     if(isNaN(this.totalCount)) this.totalCount = 0;
-                    if(this.totalCount > 0) {
+                    if (this.totalCount > 0) {
                         this.radioDisplay = true;
-                        if(this.searchType != "") this.displayColumn = true;
-                    }
+                        if (this.searchType != "" && this.searchType != null) {
+                            this.displayColumn = true;
+                        } else {
+                            this.displayColumn = false;
+                            this.computedHeaders = this.computedHeaders
+                                .filter(header => header.key !== 'univ' && header.key !== 'comp');
+                        }
+                    } else this.radioDisplay = false;
+
                 } catch (e) {
                     console.error(e);
                 } finally {
