@@ -21,8 +21,8 @@ const routes = [
     { path: '/finder', name: 'FinderSearch', component: FinderSearch, props: true }, // 대학/연구소
     { path: '/seller', name: 'SellerSearch', component: SellerSearch, props: true }, // 중소기업
     { path: '/name', name: 'nameSearch', component: nameSearch, props: true }, // 출원인
-    { path: '/univ/:searchType/:ipc', name: 'FinderDetailUniv', component: FinderDetailUniv, props: true }, // 중소기업 > 대학/연구소
-    { path: '/comp/:searchType/:ipc', name: 'FinderDetailComp', component: FinderDetailComp, props: true }, // 중소기업 > 경쟁업체
+    { path: '/univ/:searchType/:ipc', name: 'FinderDetailUniv', component: FinderDetailUniv, props: true, meta: {drawer: false}}, // 중소기업 > 대학/연구소
+    { path: '/comp/:searchType/:ipc', name: 'FinderDetailComp', component: FinderDetailComp, props: true, meta: {drawer: false} }, // 중소기업 > 경쟁업체
 ]
 
 const router = createRouter({
