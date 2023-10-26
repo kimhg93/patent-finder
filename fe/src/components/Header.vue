@@ -23,7 +23,6 @@
         },
 
         data: () => ({
-            drawer: true,
             items: [
                 //{ title: 'Home', path: '/' },
                 //{ title: 'About', path: '/about' },
@@ -35,6 +34,12 @@
                 { title: '출원인 검색', path: '/name' },
             ],
         }),
+        computed: {
+            drawer() {
+                if(this.$route.meta.drawer != false) return true;
+                else return this.$route.meta.drawer;
+            }
+        },
         methods: {
             navigate(item) {
                 this.$router.push(item.path);

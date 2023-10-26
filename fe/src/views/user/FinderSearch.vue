@@ -174,6 +174,7 @@ UserSearch.vue<template>
             showDetail(ipc, ipc1, buttonType){
                 const convertIpc = ipc.replace("/", "-");
                 const convertIpc1 = ipc1.replace("/", "-");
+                let url = "";
 
                 if(this.searchType == "" || this.searchType == null) {
                     this.$showAlert("검색조건이 선택되지 않았습니다. 검색 조건을 선택해 주세요.", "warning");
@@ -182,21 +183,24 @@ UserSearch.vue<template>
 
                 if(this.searchType == "detail"){
                     if(convertIpc.indexOf("-") > -1) { // 광범위 > detail
-                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc}`;
-                        else location.href = `/comp/${this.searchType}/${convertIpc}`;
+                        if(buttonType == 2) url = `/univ/${this.searchType}/${convertIpc}`;
+                        else url = `/comp/${this.searchType}/${convertIpc}`;
                     } else {
-                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc1}`;
-                        else location.href = `/comp/${this.searchType}/${convertIpc1}`;
+                        if(buttonType == 2) url = `/univ/${this.searchType}/${convertIpc1}`;
+                        else url = `/comp/${this.searchType}/${convertIpc1}`;
                     }
                 } else {
                     if(convertIpc.indexOf("-") > -1){ // 광범위 > detail
-                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc1}`;
-                        else location.href = `/comp/${this.searchType}/${convertIpc1}`;
+                        if(buttonType == 2) url = `/univ/${this.searchType}/${convertIpc1}`;
+                        else url = `/comp/${this.searchType}/${convertIpc1}`;
                     } else {
-                        if(buttonType == 2) location.href = `/univ/${this.searchType}/${convertIpc}`;
-                        else location.href = `/comp/${this.searchType}/${convertIpc}`;
+                        if(buttonType == 2) url = `/univ/${this.searchType}/${convertIpc}`;
+                        else url = `/comp/${this.searchType}/${convertIpc}`;
                     }
                 }
+
+                let options = "toolbar=no,scrollbars=no,resizable=yes,status=no,menubar=no,width=1700, height=900, top=0,left=0";
+                window.open(url, "_blank", options)
             },
             searchClick() {
                 if(this.id == "" || this.password == ""){
