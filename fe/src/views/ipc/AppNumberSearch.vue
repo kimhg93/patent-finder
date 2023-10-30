@@ -84,7 +84,7 @@
                 totalCount: 0,
                 techFieldNo: 0,
                 techItemNo: 0,
-                searchType: "detail",
+                searchType: "",
                 appNumber: "",
                 radioDisplay: false,
                 lastSelected: null,
@@ -118,7 +118,10 @@
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
                     if(isNaN(this.totalCount)) this.totalCount = 0;
-                    if(this.totalCount > 0) this.radioDisplay = true;
+                    if(this.totalCount > 0) {
+                        this.radioDisplay = true;
+                        if(this.searchType == "") this.searchType = "detail";
+                    }
                 } catch (e) {
                     console.error(e);
                 } finally {
