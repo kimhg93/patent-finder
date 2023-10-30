@@ -1,4 +1,4 @@
-UserSearch.vue<template>
+<template>
     <div class="container">
         <div class="grid-container">
             <v-data-table-server
