@@ -29,12 +29,12 @@
             items: [
                 //{ title: 'Home', path: '/' },
                 //{ title: 'About', path: '/about' },
-                { title: '회원 로그인', path: '/finder' },
-                { title: '판매자 로그인', path: '/seller' },
+                { title: '회원 서비스', path: '/finder' },
+                { title: '판매자 서비스', path: '/seller' },
                 { title: '기술분류 검색', path: '/tech' },
                 { title: '기타 기술분류 검색', path: '/tech/etc' },
-                { title: '출원번호 검색', path: '/number' },
-                { title: '출원인 검색', path: '/name' },
+                { title: '출원번호 검색 서비스', path: '/number' },
+                { title: '출원인 검색 서비스', path: '/name' },
             ],
         }),
         computed: {

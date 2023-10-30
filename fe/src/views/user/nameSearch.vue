@@ -89,7 +89,7 @@ UserSearch.vue<template>
                 totalCount: 0,
                 techFieldNo: 0,
                 techItemNo: 0,
-                searchType: "detail",
+                searchType: "",
                 appNm: "",
                 password: "",
                 radioDisplay: false,
@@ -151,6 +151,7 @@ UserSearch.vue<template>
                             this.computedHeaders = this.computedHeaders
                                 .filter(header => header.key !== 'univ' && header.key !== 'comp');
                         }
+                        this.searchType = "detail";
                     } else this.radioDisplay = false;
                 } catch (e) {
                     console.error(e);
