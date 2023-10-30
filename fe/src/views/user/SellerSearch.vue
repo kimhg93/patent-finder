@@ -29,9 +29,9 @@ UserSearch.vue<template>
                     <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" v-if="changeUi">
                         <v-btn @click="searchClick()" >검색</v-btn>
                     </v-col>
-                    <!-- 조회 후 영역 -->
 
-                    <v-col cols="12" md="2" lg="2" v-if="!changeUi">
+                    <!-- 조회 후 영역 -->
+                    <v-col cols="12" md="3" lg="3" v-if="!changeUi">
                         <div class="orgTitle"><h3>{{orgTitle}}</h3></div>
                     </v-col>
                     <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" v-if="!changeUi">

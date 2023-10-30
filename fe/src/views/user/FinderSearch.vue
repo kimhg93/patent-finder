@@ -3,7 +3,7 @@ UserSearch.vue<template>
         <v-card class="mx-auto" color="grey-lighten-3" max-width="95%">
             <v-card-text>
                 <v-row no-gutters>
-                    <v-col cols="12" md="2" lg="2">
+                    <v-col cols="12" md="2" lg="2" v-if="changeUi">
                         <v-text-field
                                 :loading="loading"
                                 density="compact"
@@ -14,7 +14,7 @@ UserSearch.vue<template>
                                 prepend-inner-icon="mdi-account">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="2" lg="2">
+                    <v-col cols="12" md="2" lg="2" v-if="changeUi">
                         <v-text-field
                                 :loading="loading"
                                 density="compact"
@@ -25,6 +25,10 @@ UserSearch.vue<template>
                                 hide-details
                                 v-model="password">
                         </v-text-field>
+                    </v-col>
+                    <!-- 조회 후 영역 -->
+                    <v-col cols="12" md="3" lg="3" v-if="!changeUi">
+                        <div class="orgTitle"><h3>{{orgTitle}}</h3></div>
                     </v-col>
                     <v-col cols="12" md="4" lg="4" v-if="radioDisplay">
                         <v-radio-group inline class="rdo-grp" hide-details align-self="center" v-model="searchType">
@@ -41,9 +45,11 @@ UserSearch.vue<template>
                             </v-radio>
                         </v-radio-group>
                     </v-col>
-                    <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" >
+                    <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search">
                         <v-btn @click="searchClick()">검색</v-btn>
                     </v-col>
+
+
                 </v-row>
             </v-card-text>
         </v-card>
@@ -101,12 +107,14 @@ UserSearch.vue<template>
                 totalCount: 0,
                 techFieldNo: 0,
                 techItemNo: 0,
-                searchType: "detail",
+                searchType: "",
                 id: "",
                 password: "",
                 radioDisplay: false,
                 lastSelected: null,
                 displayColumn: false,
+                changeUi: true,
+                orgTitle: "",
                 list: [],
             };
         },
@@ -162,6 +170,9 @@ UserSearch.vue<template>
                             this.computedHeaders = this.computedHeaders
                                 .filter(header => header.key !== 'univ' && header.key !== 'comp');
                         }
+                        this.searchType = "detail";
+                        this.changeUi = false;
+                        this.orgTitle = this.list[0].appNm;
                     } else this.radioDisplay = false;
 
                 } catch (e) {
@@ -276,5 +287,9 @@ UserSearch.vue<template>
     }
     .col-radio{
         display: none;
+    }
+    .orgTitle {
+        margin-top:13px;
+        margin-left: 20px;
     }
 </style>
