@@ -1,6 +1,41 @@
 <template>
     <div class="container">
+
         <div class="grid-container">
+            <div class="radio-container" >
+                <v-radio-group inline v-model="orgType" @change="radioChange">
+                    <v-radio color="primary" value="9" class="radio">
+                        <template v-slot:label>
+                            <span class="radio-label">전체</span>
+                        </template>
+                    </v-radio>
+                    <v-radio color="success" value="2" class="radio">
+                        <template v-slot:label>
+                            <span class="radio-label">대학/연구소</span>
+                        </template>
+                    </v-radio>
+                    <v-radio color="success" value="5" class="radio">
+                        <template v-slot:label>
+                            <span class="radio-label">대기업</span>
+                        </template>
+                    </v-radio>
+                    <v-radio color="success" value="6" class="radio">
+                        <template v-slot:label>
+                            <span class="radio-label">중견기업</span>
+                        </template>
+                    </v-radio>
+                    <v-radio color="success" value="1" class="radio">
+                        <template v-slot:label>
+                            <span class="radio-label">중소기업</span>
+                        </template>
+                    </v-radio>
+                    <v-radio color="success" value="3" class="radio">
+                        <template v-slot:label>
+                            <span class="radio-label">외국기업</span>
+                        </template>
+                    </v-radio>
+                </v-radio-group>
+            </div>
             <v-data-table-server
                     class="elevation-1"
                     :headers="headers"
@@ -47,6 +82,7 @@
                 itemsPerPage: 30,
                 currentPage: 1,
                 totalCount: 0,
+                orgType: "9",
                 headers: [
                     { width:"100",title: '출원번호', align: 'center', sortable: false, key: 'appNo' },
                     { width:"80",title: '출원일자', align: 'center', key: 'appDate' },
@@ -73,6 +109,7 @@
                             source: this.source,
                             page: this.currentPage,
                             size: this.itemsPerPage,
+                            orgType: this.orgType
                         },
                     });
 
@@ -89,6 +126,9 @@
                 this.currentPage = page;
                 this.itemsPerPage = itemsPerPage;
                 this.fetchData();
+            },
+            radioChange() {
+                this.fetchData()
             },
         },
     };

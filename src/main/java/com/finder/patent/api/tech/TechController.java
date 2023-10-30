@@ -37,16 +37,19 @@ public class TechController {
     @GetMapping(value = "/data/tech/{techFieldNo}/{techItemNo}")
     public ResponseEntity<Map<String, Object>> patentListByTechDetail(@PathVariable int techFieldNo,
                                                                       @PathVariable int techItemNo,
-                                                                      String searchType, String source, int page, int size){
+                                                                      String searchType, String source, int page, int size, int orgType){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> param = new HashMap<>();
 
         param.put("techFieldNo", techFieldNo);
         param.put("techItemNo", techItemNo);
         param.put("searchType", searchType);
+        param.put("orgType", orgType);
         param.put("source", source);
         param.put("from", (page-1) * size);
         param.put("size", size);
+
+        System.err.println("################## " + orgType);
 
         result.put("totalCount", techService.selectParentListCount(param));
         result.put("list", techService.selectPatentList(param));

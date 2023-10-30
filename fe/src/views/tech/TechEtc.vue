@@ -47,7 +47,7 @@
             return {
                 techFields: [], // 데이터를 저장할 배열
                 combinedItems: [],
-                searchType: "",
+                searchType: "detail",
             }
         },
         created() {

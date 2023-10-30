@@ -84,7 +84,7 @@
                 totalCount: 0,
                 techFieldNo: 0,
                 techItemNo: 0,
-                searchType: "",
+                searchType: "detail",
                 appNumber: "",
                 radioDisplay: false,
                 lastSelected: null,
