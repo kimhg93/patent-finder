@@ -170,7 +170,7 @@ UserSearch.vue<template>
                             this.computedHeaders = this.computedHeaders
                                 .filter(header => header.key !== 'univ' && header.key !== 'comp');
                         }
-                        this.searchType = "detail";
+                        if(this.searchType == "") this.searchType = "detail";
                         this.changeUi = false;
                         this.orgTitle = this.list[0].appNm;
                     } else this.radioDisplay = false;
