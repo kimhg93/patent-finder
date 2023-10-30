@@ -3,7 +3,7 @@ UserSearch.vue<template>
         <v-card class="mx-auto" color="grey-lighten-3" max-width="95%">
             <v-card-text>
                 <v-row no-gutters>
-                    <v-col cols="12" md="2" lg="2">
+                    <v-col cols="12" md="2" lg="2" v-if="changeUi">
                         <v-text-field
                                 :loading="loading"
                                 density="compact"
@@ -14,7 +14,7 @@ UserSearch.vue<template>
                                 prepend-inner-icon="mdi-account">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="2" lg="2">
+                    <v-col cols="12" md="2" lg="2" v-if="changeUi">
                         <v-text-field
                                 :loading="loading"
                                 density="compact"
@@ -26,8 +26,16 @@ UserSearch.vue<template>
                                 v-model="password">
                         </v-text-field>
                     </v-col>
-                    <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" >
+                    <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" v-if="changeUi">
                         <v-btn @click="searchClick()" >검색</v-btn>
+                    </v-col>
+                    <!-- 조회 후 영역 -->
+
+                    <v-col cols="12" md="2" lg="2" v-if="!changeUi">
+                        <div class="orgTitle"><h3>{{orgTitle}}</h3></div>
+                    </v-col>
+                    <v-col cols="12" md="1" lg="1" align-self="center" class="col-btn-search" v-if="!changeUi">
+                        <v-btn @click="searchClick()" >수정내용저장</v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -84,6 +92,8 @@ UserSearch.vue<template>
                 techItemNo: 0,
                 id: "",
                 password: "",
+                changeUi: true,
+                orgTitle: "",
                 headers: [
                     { width:"100",title: '등록번호', align: 'center', sortable: false, key: 'regNo' },
                     { width:"80",title: '등록일자', align: 'center', key: 'regDate' },
@@ -117,6 +127,11 @@ UserSearch.vue<template>
                     this.list = response.data.list;
                     this.totalCount = response.data.totalCount;
                     if(isNaN(this.totalCount)) this.totalCount = 0;
+
+                    if(this.totalCount > 0) {
+                        this.changeUi = false;
+                        this.orgTitle = this.list[0].appNm;
+                    }
                 } catch (e) {
                     console.error(e);
                 } finally {
@@ -201,5 +216,9 @@ UserSearch.vue<template>
         height:30px;
         width: 45px;
         margin: auto;
+    }
+    .orgTitle {
+        margin-top:10px;
+        margin-left: 20px;
     }
 </style>

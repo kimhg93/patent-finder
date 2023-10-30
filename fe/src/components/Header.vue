@@ -11,6 +11,9 @@
             <v-btn icon @click="drawer = !drawer">
                 <v-icon>mdi-menu</v-icon>
             </v-btn>
+            <v-spacer></v-spacer>
+            <h2>{{ title }}</h2>
+            <v-spacer></v-spacer>
         </v-app-bar>
     </header>
 </template>
@@ -38,7 +41,13 @@
             drawer() {
                 if(this.$route.meta.drawer != false) return true;
                 else return this.$route.meta.drawer;
-            }
+            },
+            title() {
+                const url = this.$route.path;
+                if(url.indexOf("/etc/detail/") == 0) return "기타 기술분류 검색";
+                if(url == "/") return "기술분류 검색";
+                return this.$route.meta.title;
+            },
         },
         methods: {
             navigate(item) {

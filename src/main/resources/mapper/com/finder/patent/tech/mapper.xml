@@ -80,11 +80,27 @@
          WHERE A.TechGroupType ='MGSC'
            AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+           ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+            AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+            AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+            AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+            AND E.OrgNo = 3
+        </if>
+
          ORDER BY D.MG_IPCNo
              , D.MG_IPCCd
              , E.AppNo
          LIMIT #{from }, #{size }
-        ]]>
     </select>
 
     <!-- 기술분류 광범위 IPC  -->
@@ -119,10 +135,25 @@
          WHERE A.TechGroupType ='MGSC'
            AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+       ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+           AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+           AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+           AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+           AND E.OrgNo = 3
+        </if>
          ORDER BY D.SC_IPCNo
              , D.SC_IPCCd
          LIMIT #{from }, #{size }
-        ]]>
     </select>
 
     <!-- 기타 기술분류 상세 IPC   -->
@@ -157,11 +188,26 @@
          WHERE A.TechGroupType ='ETC0'
            AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+        ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+           AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+           AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+           AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+           AND E.OrgNo = 3
+        </if>
          ORDER BY D.MG_IPCNo
              , D.MG_IPCCd
              , E.AppNo
          LIMIT #{from }, #{size }
-        ]]>
     </select>
 
     <!-- 기타 기술분류 광범위 IPC  -->
@@ -196,10 +242,25 @@
          WHERE A.TechGroupType ='ETC0'
            AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
+       ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+           AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+           AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+           AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+           AND E.OrgNo = 3
+        </if>
          ORDER BY D.SC_IPCNo
              , D.SC_IPCCd
          LIMIT #{from }, #{size }
-        ]]>
     </select>
 
 
@@ -219,10 +280,22 @@
          WHERE A.TechGroupType ='MGSC'
            AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
-         ORDER BY D.MG_IPCNo
-             , D.MG_IPCCd
-             , E.AppNo
         ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+           AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+           AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+           AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+           AND E.OrgNo = 3
+        </if>
     </select>
 
     <select id="selectPatentListByTechRangeCount" resultType="Integer">
@@ -241,9 +314,22 @@
          WHERE A.TechGroupType ='MGSC'
            AND B.TechFieldNo = #{techFieldNo } -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
-         ORDER BY D.SC_IPCNo
-             , D.SC_IPCCd
         ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+           AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+           AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+           AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+           AND E.OrgNo = 3
+        </if>
     </select>
 
     <select id="selectPatentListByTechEtcDetailCount" resultType="Integer">
@@ -262,10 +348,22 @@
          WHERE A.TechGroupType ='ETC0'
            AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
-         ORDER BY D.MG_IPCNo
-             , D.MG_IPCCd
-             , E.AppNo
         ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+           AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+           AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+           AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+           AND E.OrgNo = 3
+        </if>
     </select>
 
     <select id="selectPatentListByTechEtcRangeCount" resultType="Integer">
@@ -284,9 +382,22 @@
          WHERE A.TechGroupType ='ETC0'
            AND B.TechFieldNo = #{techFieldNo }  -- PARAM 1 techFieldNo
            AND C.TechItemNo = #{techItemNo } -- PARAM 2 techItemNo
-         ORDER BY D.SC_IPCNo
-             , D.SC_IPCCd;
-        ]]>
+         ]]>
+        <if test="orgType == 2">
+           AND (E.OrgNo = 2 OR E.OrgNo = 4)
+        </if>
+        <if test="orgType == 5">
+           AND E.OrgNo = 5
+        </if>
+        <if test="orgType == 6">
+           AND E.OrgNo = 6
+        </if>
+        <if test="orgType == 1">
+           AND E.OrgNo = 1
+        </if>
+        <if test="orgType == 3">
+           AND E.OrgNo = 3
+        </if>
     </select>
 
     <select id="getFieldAndItem" parameterType="String" resultType="com.finder.patent.config.CamelMap">

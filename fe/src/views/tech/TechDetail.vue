@@ -49,7 +49,7 @@
             return {
                 items: [ ],
                 title: "",
-                searchType: "",
+                searchType: "detail",
             };
 
         },

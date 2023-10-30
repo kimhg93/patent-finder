@@ -89,7 +89,7 @@ UserSearch.vue<template>
                 totalCount: 0,
                 techFieldNo: 0,
                 techItemNo: 0,
-                searchType: "",
+                searchType: "detail",
                 appNm: "",
                 password: "",
                 radioDisplay: false,
