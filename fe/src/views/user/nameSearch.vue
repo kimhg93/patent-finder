@@ -151,7 +151,7 @@ UserSearch.vue<template>
                             this.computedHeaders = this.computedHeaders
                                 .filter(header => header.key !== 'univ' && header.key !== 'comp');
                         }
-                        this.searchType = "detail";
+                        if(this.searchType == "") this.searchType = "detail";
                     } else this.radioDisplay = false;
                 } catch (e) {
                     console.error(e);
