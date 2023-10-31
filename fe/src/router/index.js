@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import IndexPage from '@/views/Index.vue'
 import Tech from '@/views/tech/Tech.vue'
 import TechDetail from '@/views/tech/TechDetail.vue'
 import TechGrid from '@/views/tech/TechGrid.vue'
@@ -12,7 +13,7 @@ import FinderDetailComp from '@/views/user/FinderDetailComp.vue'
 
 
 const routes = [
-    { path: '/', name: 'IndexPage', component: Tech },
+    { path: '/', name: 'IndexPage', component: IndexPage },
     { path: '/tech', alias: '/', name: 'TechIndex', component: Tech, meta: { title: '기술분류 검색' } }, // 인덱스(기술분류)
     { path: '/tech/etc', name: 'TechEtc', component: TechEtc, meta: { title: '기타 기술분류 검색' }}, // 기타 기술 분류 검색
     { path: '/tech/:code', name: 'TechDetail', component: TechDetail, props: true, meta: { title: '기술분류 검색' } }, // 기술분류 검색 detail

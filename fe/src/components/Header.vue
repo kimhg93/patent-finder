@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header v-if="showHeader">
         <v-navigation-drawer app elevation="2" v-model="drawer">
             <v-list :items="items">
                 <v-list-item v-for="item in items" :title="item.title" :key="item.title" @click="navigate(item)">
@@ -45,15 +45,21 @@
             title() {
                 const url = this.$route.path;
                 if(url.indexOf("/etc/detail/") == 0) return "기타 기술분류 검색";
-                if(url == "/") return "기술분류 검색";
+                if(url == "/") return "";
+
                 return this.$route.meta.title;
             },
+            showHeader() {
+                return this.$route.path != "/";
+            }
         },
         methods: {
             navigate(item) {
                 this.$router.push(item.path);
             },
         },
+        created() {
+        }
     }
 </script>
 
