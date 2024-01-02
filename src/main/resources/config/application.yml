@@ -4,7 +4,7 @@ server:
 spring:
     datasource:
       driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: ENC(HvXymlmjU+21R1u6pxp5fC3b1Zm3hz6oKUu6mEgAshKYHYtIf/t/EAQA0g8Ks05k7+/rZoIi/ZFs2Du0fy9Xtg==)
+      url: ENC(t/K1L+amITrxQDmgGW6gDg5YqzOaRLGQU8VcjqpH+P4gJ5Fn0Z3cApmJu9mmUB/ggINCXS2G/kM=)
       username: ENC(/cfBuPPvDoDCYGEPmnZZyg==)
       password: ENC(R1L/gnSgUGntop24Zg15PO1KZnXoDIvZ)
 
