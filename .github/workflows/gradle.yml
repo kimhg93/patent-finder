@@ -31,7 +31,7 @@ jobs:
     - name: Setup Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v0.3
       with:
-        project_id: blissful-age-401101
+        project_id: arcane-attic-409407
         service_account_key: ${{ secrets.GCE_SA_KEY }}
         export_default_credentials: true
 
@@ -44,6 +44,6 @@ jobs:
       with:
         context: .
         push: true
-        tags: asia-northeast3-docker.pkg.dev/blissful-age-401101/patent-finder/patent-finder:dev 
+        tags: asia-northeast3-docker.pkg.dev/arcane-attic-409407/patent-finder/patent-finder:dev 
         file: ./Dockerfile
 
