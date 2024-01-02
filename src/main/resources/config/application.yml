@@ -1,10 +1,10 @@
 server:
-  port: 80
+  port: 8080
 
 spring:
     datasource:
       driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      url: ENC(t/K1L+amITrxQDmgGW6gDg5YqzOaRLGQU8VcjqpH+P4gJ5Fn0Z3cApmJu9mmUB/ggINCXS2G/kM=)
+      url: ENC(E37qn5OGT7+x3ZcM9lGNOH1+Tc4iCbtZRGcKBSknDoz2JtT5I5wfRbQ1rIlfL3roFyrQhGJYMB8=)
       username: ENC(/cfBuPPvDoDCYGEPmnZZyg==)
       password: ENC(R1L/gnSgUGntop24Zg15PO1KZnXoDIvZ)
 
